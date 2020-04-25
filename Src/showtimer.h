@@ -30,6 +30,8 @@ private:
     Ui::ShowTimer *ui;
     CountDown* time;
     QTimer* timer;
+    QString text;
+    QMediaPlayer* sound;
 };
 
 #endif // SHOWTIMER_H

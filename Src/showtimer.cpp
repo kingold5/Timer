@@ -7,10 +7,13 @@ ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime) :
     QDialog(parent),
     ui(new Ui::ShowTimer),
     time(ptime),
-    timer(new QTimer(this))
+    timer(new QTimer(this)),
+    text(ptime->getQString()),
+    sound(new QMediaPlayer)
 {
     ui->setupUi(this);
     ui->lcdTimer->setSegmentStyle(QLCDNumber::Filled);
+    ui->lcdTimer->display(text);
     // ui->lcdTimer->display("00:00:00");
     connect(timer, SIGNAL(timeout()), this, SLOT(display()));
 
@@ -38,11 +41,11 @@ void ShowTimer::reject() {
     if (timer->isActive() == true) {
         timer->stop();
     }
+    sound->stop();
     QDialog::reject();
 }
 
 void ShowTimer::alarm() {
-    QMediaPlayer* sound = new QMediaPlayer();
     sound->setMedia(QUrl("qrc:/sounds/Rcs/analog-watch-alarm_daniel-simion.mp3"));
     sound->play();
 }
