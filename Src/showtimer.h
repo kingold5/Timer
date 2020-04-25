@@ -3,7 +3,7 @@
 
 #include <QDialog>
 #include <QTimer>
-#include <QMediaPlayer>
+#include <QSoundEffect>
 #include "Countdown.hpp"
 
 namespace Ui {
@@ -24,6 +24,8 @@ public slots:
 private slots:
     void display();
 
+    void on_pushButtonStop_clicked();
+
 private:
     void alarm();
 
@@ -31,7 +33,7 @@ private:
     CountDown* time;
     QTimer* timer;
     QString text;
-    QMediaPlayer* sound;
+    QSoundEffect* efx;
 };
 
 #endif // SHOWTIMER_H
