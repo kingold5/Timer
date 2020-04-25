@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include "Countdown.hpp"
+#include "showtimer.h"
 
 
 namespace Ui {
@@ -22,7 +23,8 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    Countdown *timer;
+    CountDown *time;
+    ShowTimer *showtimer;
 };
 
 #endif // MAINWINDOW_H

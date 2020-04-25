@@ -1,12 +1,11 @@
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
-#include "Countdown.hpp"
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    timer(new Countdown)
+    time(new CountDown)
 {
     ui->setupUi(this);
 }
@@ -14,11 +13,14 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete ui;
+    delete time;
 }
 
 void MainWindow::on_PushButtonOK_clicked()
 {
-    timer->setTimer(static_cast<int>(ui->timeHour->value()), static_cast<int>(ui->timeMin->value()),\
-                    static_cast<int>(ui->timeSec->value()));
-
+    time->setTimer(static_cast<int>(ui->timeHour->value()),
+                   static_cast<int>(ui->timeMin->value()),
+                   static_cast<int>(ui->timeSec->value()));
+    showtimer = new ShowTimer(this, time);
+    showtimer ->show();
 }
