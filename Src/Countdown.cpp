@@ -1,61 +1,54 @@
+#include <iostream>
+#include <iomanip>
+#include <unistd.h>
 #include "Countdown.hpp"
 
+using namespace std;
 
-Countdown::Countdown(int h, int m, int s) {
+CountDown::CountDown(int h, int m, int s) :
+    hour(h), minute(m), second(s) {
+    toSec();
+}
+
+void CountDown::setTimer(int h, int m, int s) {
     hour = h;
     minute = m;
     second = s;
+    toSec();
 }
 
-void Countdown::setTimer(int h, int m, int s) {
-    hour = h;
-    minute = m;
-    second = s;
-}
-
-void Countdown::getTimer(int *h, int *m, int *s) {
+void CountDown::getTimer(int *h, int *m, int *s) {
     *h = hour;
     *m = minute;
     *s = second;
 }
 
-void Countdown::display() {
-    system("clear");
-    cout << "\r";
-    cout << setfill('0') << setw(2) << hour << ":";
-    cout << setfill('0') << setw(2) << minute << ":";
-    cout << setfill('0') << setw(2) << second;
-    cout << flush;
+QString CountDown::getQString() {
+    QString time = QString("%1:%2:%3")
+            .arg(hour, 2, 10, QChar('0'))
+            .arg(minute, 2, 10, QChar('0'))
+            .arg(second, 2, 10, QChar('0'));
+    return time;
 }
 
-int Countdown::timeDec() {
-    while(true) {
-        Countdown::display();
-        sleep(1);
-        if (second == 0) {
-            second = 59;
-            if (minute == 0) {
-                minute = 59;
-                if (hour == 0) {
-                    return 0;
-                }
-                else {
-                    hour--;
-                }
-            }
-            else {
-                minute--;
-            }
-        }
-        else {
-                second--;
-        }
-    }
+void CountDown::toNormal() {
+    hour = numSeconds / 3600;
+    minute = (numSeconds/60) % 60;
+    second = numSeconds % 60;
 }
 
-void Countdown::run() {
-    if (Countdown::timeDec() == 0) {
-        cout << '\a' << endl;
-        cout << "Time countdown is finished!" << endl;
+void CountDown::toSec() {
+    numSeconds = 3600*hour + 60*minute + second;
+}
+
+int CountDown::timeDec(int dec) {
+    numSeconds -= dec;
+    if (numSeconds < 0) {
+        numSeconds = 0;
+        toNormal();
+        return 1;
+    } else {
+        toNormal();
+        return 0;
     }
 }
