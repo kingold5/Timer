@@ -14,7 +14,7 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>210</x>
@@ -31,7 +31,7 @@
          <item>
           <widget class="QLabel" name="labelPlan">
            <property name="text">
-            <string>Plan:</string>
+            <string>Project:</string>
            </property>
           </widget>
          </item>
@@ -62,7 +62,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="timeSec">
+            <widget class="QDoubleSpinBox" name="timeMin">
              <property name="decimals">
               <number>0</number>
              </property>
@@ -79,7 +79,7 @@
             </widget>
            </item>
            <item>
-            <widget class="QDoubleSpinBox" name="timeMin">
+            <widget class="QDoubleSpinBox" name="timeSec">
              <property name="decimals">
               <number>0</number>
              </property>
@@ -156,8 +156,6 @@
  <tabstops>
   <tabstop>planName</tabstop>
   <tabstop>timeHour</tabstop>
-  <tabstop>timeSec</tabstop>
-  <tabstop>timeMin</tabstop>
   <tabstop>PushButtonOK</tabstop>
   <tabstop>pushButtonCancel</tabstop>
  </tabstops>
