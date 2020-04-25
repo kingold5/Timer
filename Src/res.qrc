@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/sounds">
+        <file>Rcs/analog-watch-alarm_daniel-simion.mp3</file>
+    </qresource>
+</RCC>
