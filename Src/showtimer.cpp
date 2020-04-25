@@ -26,7 +26,10 @@ ShowTimer::~ShowTimer()
 
 void ShowTimer::display()
 {
-    time->timeDec(1);
+    if(time->timeDec(1) == 1) {
+        timer->stop();
+        alarm();
+    }
     QString text = time->getQString();
     ui->lcdTimer->display(text);
 }
@@ -36,4 +39,10 @@ void ShowTimer::reject() {
         timer->stop();
     }
     QDialog::reject();
+}
+
+void ShowTimer::alarm() {
+    QMediaPlayer* sound = new QMediaPlayer();
+    sound->setMedia(QUrl("qrc:/sounds/Rcs/analog-watch-alarm_daniel-simion.mp3"));
+    sound->play();
 }
