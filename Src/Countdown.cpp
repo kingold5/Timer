@@ -23,7 +23,7 @@ void CountDown::getTimer(int *h, int *m, int *s) {
     *s = second;
 }
 
-QString CountDown::getQString() {
+QString CountDown::timeQString() {
     QString time = QString("%1:%2:%3")
             .arg(hour, 2, 10, QChar('0'))
             .arg(minute, 2, 10, QChar('0'))

@@ -32,7 +32,7 @@ private:
     Ui::ShowTimer *ui;
     CountDown* time;
     QTimer* timer;
-    QString text;
+    QString textTime;
     QSoundEffect* efx;
 };
 

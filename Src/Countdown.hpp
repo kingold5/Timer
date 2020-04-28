@@ -10,7 +10,7 @@ class CountDown {
 
         void setTimer(int h, int m, int s);
         void getTimer(int* h, int* m, int* s);
-        QString getQString();
+        QString timeQString();
         int timeDec(int dec);
 
     private:

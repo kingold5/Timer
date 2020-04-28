@@ -1,7 +1,7 @@
-#include "showtimer.h"
-#include "ui_showtimer.h"
 #include <QString>
 #include <QLCDNumber>
+#include "showtimer.h"
+#include "ui_showtimer.h"
 
 
 ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime) :
@@ -9,12 +9,12 @@ ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime) :
     ui(new Ui::ShowTimer),
     time(ptime),
     timer(new QTimer(this)),
-    text(ptime->getQString()),
+    textTime(ptime->timeQString()),
     efx(new QSoundEffect(this))
 {
     ui->setupUi(this);
     ui->lcdTimer->setSegmentStyle(QLCDNumber::Filled);
-    ui->lcdTimer->display(text);
+    ui->lcdTimer->display(textTime);
     ui->pushButtonStop->setEnabled(false);
     // ui->lcdTimer->display("00:00:00");
     connect(timer, SIGNAL(timeout()), this, SLOT(display()));
@@ -36,8 +36,8 @@ void ShowTimer::display()
         timer->stop();
         alarm();
     }
-    QString text = time->getQString();
-    ui->lcdTimer->display(text);
+    QString textTime = time->timeQString();
+    ui->lcdTimer->display(textTime);
 }
 
 void ShowTimer::reject() {
