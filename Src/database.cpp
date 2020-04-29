@@ -1,4 +1,3 @@
-#include <QtXml>
 #include <QFile>
 #include <QDebug>
 #include <QMessageBox>
@@ -151,4 +150,20 @@ bool DataBase::toTime(QString time, double *h, double* m, double* s) {
     }
 
     return false;
+}
+
+QDomElement DataBase::nodeProject(QDomDocument &doc, QString projectName, QString projectTime) {
+    // Add new project node
+    QDomElement newProject = doc.createElement("projects");
+    newProject.setAttribute("name", projectName);
+    newProject.setAttribute("duration", projectTime);
+
+    QDateTime createDate;
+    QString QCreateDate = createDate.currentDateTimeUtc().toString();
+    QDomElement date = doc.createElement("createDate");
+    QDomText tCreateDate = doc.createTextNode(QCreateDate);
+    newProject.appendChild(date);
+    date.appendChild(tCreateDate);
+
+    return newProject;
 }

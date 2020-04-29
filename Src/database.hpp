@@ -1,7 +1,7 @@
 #ifndef DATABASE_H
 #define DATABASE_H
 
-#include <QWidget>
+#include <QtXml>
 
 class DataBase
 {
@@ -17,7 +17,7 @@ public:
     bool toTime(QString time, double *h, double *m, double *s);
 
 private:
-    QWidget* parent;
+    QDomElement nodeProject(QDomDocument &doc, QString projectName, QString projectTime);
 };
 
 #endif // DATABASE_H
