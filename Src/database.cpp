@@ -26,36 +26,46 @@ int DataBase::writeTemp(const QString projectName, const QString projectTime)
 //        msgBox.exec();
 //    }
     QDomDocument doc;
-    QDomElement root = doc.createElement("tempPlans");
-    doc.appendChild(root);
-
-    QDomElement user = doc.createElement("projects");
-    user.setAttribute("duration", projectTime);
-    user.setAttribute("name", projectName);
-    root.appendChild(user);
-
-    QDateTime createDate;
-    QString QCreateDate = createDate.currentDateTimeUtc().toString();
-    QDomElement date = doc.createElement("createDate");
-    QDomText tCreateDate = doc.createTextNode(QCreateDate);
-    user.appendChild(date);
-    date.appendChild(tCreateDate);
-
+    QDomElement root;
     QFile file("tempplans.xml");
-    if(!file.open(QIODevice::WriteOnly | QIODevice::Text)){
-        qDebug()<<"could not open file for Writing";
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         return -1;
     }
-    else
-    {
-        QTextStream ts(&file);
-        ts<<doc.toString();
-        qDebug()<<"Finished";
+    if (file.size() == 0) {
+        qDebug() << "file is null";
+        root = doc.createElement("tempPlans");
+        doc.appendChild(root);
     }
+    else if (!doc.setContent(&file)) {
+        file.close();
+        qDebug() << "failed to load content";
+        return -1;
+    }
+
+    // Find the root element
+    root = doc.documentElement();
+    // Find latest project, if it is not identical to the current project
+    // append the current project.
+    QDomNode n = root.lastChild();
+    QDomElement e = n.toElement();
+    if (!e.isNull()) {
+        if (e.attribute("name", "") == projectName && e.attribute("duration", "") == projectTime) {
+            // Same project, no need to write
+            return 0;
+        } else {
+            root.appendChild(nodeProject(doc, projectName, projectTime));
+        }
+    } else {
+        root.appendChild(nodeProject(doc, projectName, projectTime));
+    }
+
+        QTextStream ts(&file);
+    file.resize(0);
+        ts<<doc.toString();
     return 0;
 }
 
-int DataBase::loadTemp(QString* projectName, double *h, double *m, double *s) {
+int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
     /**
      * Load the lastest plan from tempplan.xml
      *
@@ -66,8 +76,9 @@ int DataBase::loadTemp(QString* projectName, double *h, double *m, double *s) {
 
     QDomDocument doc("tempPlans");
     QFile file("tempplans.xml");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         return -1;
+    }
     if (!doc.setContent(&file)) {
         file.close();
         return -1;
@@ -75,22 +86,18 @@ int DataBase::loadTemp(QString* projectName, double *h, double *m, double *s) {
 
     // Find the root element
     QDomElement docElem = doc.documentElement();
+    // Find last child node of root element
     QDomNode n = docElem.lastChild();
     QDomElement e = n.toElement();
     if (!e.isNull()) {
         QString time = e.attribute("duration", "");
         if (toTime(time, h, m, s)) {
             *projectName = e.attribute("name", "");
-            return 0;
         }
+            return 0;
+    } else {
+        return -1;
      }
-
-    // Set all value as default
-    *projectName == "";
-    *h = 0.0;
-    *m = 0.0;
-    *s = 0.0;
-    return 0;
 }
 
 int DataBase::load(QString *projectName, double h, double m, double s) {
