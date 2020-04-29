@@ -6,9 +6,10 @@
 
 class CountDown {
     public:
-        CountDown(int h=0, int m=0, int s=0);
+        CountDown(double h=0.0, double m=0.0, double s=0.0);
 
         void setTimer(int h, int m, int s);
+        void setTimer(double h, double m, double s);
         void getTimer(int* h, int* m, int* s);
         QString timeQString();
         int timeDec(int dec);

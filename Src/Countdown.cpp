@@ -1,12 +1,11 @@
-#include <iostream>
-#include <iomanip>
-#include <unistd.h>
 #include "Countdown.hpp"
 
-using namespace std;
 
-CountDown::CountDown(int h, int m, int s) :
-    hour(h), minute(m), second(s) {
+CountDown::CountDown(double h, double m, double s) :
+    hour(static_cast<int>(h)),
+    minute(static_cast<int>(m)),
+    second(static_cast<int>(s))
+{
     toSec();
 }
 
@@ -14,6 +13,13 @@ void CountDown::setTimer(int h, int m, int s) {
     hour = h;
     minute = m;
     second = s;
+    toSec();
+}
+
+void CountDown::setTimer(double h, double m, double s) {
+    hour = static_cast<int>(h);
+    minute = static_cast<int>(m);
+    second = static_cast<int>(s);
     toSec();
 }
 
