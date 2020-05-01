@@ -8,7 +8,7 @@ class DataBase
 public:
     DataBase(QWidget* p);
 
-    int writeTemp(const QString projectName, const QString projectTime);
+    int appendTemp(const QString &projectName, const QString &projectTime);
     int loadTemp(QString* projectName, double* h, double* m, double* s);
     int loadTemp(QString* projectName, QString* projectTime);
     int append(const QString& projectName, const QString& projectTime);
