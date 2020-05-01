@@ -47,13 +47,13 @@ int DataBase::appendTemp(const QString &projectName, const QString &projectTime)
             // Same project, no need to write
             return 1;
         }
-        }
+    }
 
-        root.appendChild(nodeProject(doc, projectName, projectTime));
+    root.appendChild(nodeProject(doc, projectName, projectTime));
 
-        QTextStream ts(&file);
+    QTextStream ts(&file);
     file.resize(0);
-        ts<<doc.toString();
+    ts<<doc.toString();
     return 0;
 }
 
@@ -90,7 +90,7 @@ int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
             *projectName = e.attribute("name", "");
             return 0;
         }
-     }
+    }
 
     return 1;
 }

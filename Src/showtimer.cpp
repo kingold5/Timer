@@ -34,6 +34,7 @@ void ShowTimer::display()
 {
     if(time->timeDec(1) == 1) {
         timer->stop();
+        ui->pushButtonPause->setEnabled(false);
         alarm();
     }
     QString textTime = time->timeQString();
