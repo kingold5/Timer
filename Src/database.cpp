@@ -193,7 +193,7 @@ bool DataBase::toTime(QString time, double *h, double* m, double* s) {
     return false;
 }
 
-QDomElement DataBase::nodeProject(QDomDocument &doc, QString projectName, QString projectTime) {
+QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName, const QString& projectTime) {
     // Add new project node
     QDomElement newProject = doc.createElement("projects");
     newProject.setAttribute("name", projectName);
