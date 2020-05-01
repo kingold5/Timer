@@ -10,6 +10,7 @@ MainWindow::MainWindow(QWidget *parent) :
     data(new DataBase)
 {
     ui->setupUi(this);
+    setWindowTitle("Timer");
     double hour=0.0, min=0.0, sec=0.0;
     QString projectName="";
     data->loadTemp(&projectName, &hour, &min, &sec);

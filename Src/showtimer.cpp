@@ -13,6 +13,7 @@ ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime, const QString name) :
     efx(new QSoundEffect(this))
 {
     ui->setupUi(this);
+    setWindowTitle("Project");
     ui->lcdTimer->setSegmentStyle(QLCDNumber::Filled);
     ui->lcdTimer->display(textTime);
     ui->pushButtonStop->setEnabled(false);
