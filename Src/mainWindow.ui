@@ -120,7 +120,7 @@
        <item>
         <widget class="QPushButton" name="PushButtonOK">
          <property name="text">
-          <string>OK</string>
+          <string>Run Now</string>
          </property>
         </widget>
        </item>
