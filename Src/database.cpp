@@ -104,23 +104,60 @@ int DataBase::load(QString *projectName, double h, double m, double s) {
     return 0;
 }
 
-int DataBase::write(const QString *projectName, const QString *projectTime) {
-    return 0;
+int DataBase::append(const QString &projectName, const double &h, const double &m, const double &s) {
+    QString projectTime = toQString(h, m, s);
+    int result = append(projectName, projectTime);
+    return result;
 }
 
-int DataBase::dataExisted(const QString *projectName)
-{
-    QDomDocument doc("tempPlans");
-    QFile file("tempplans.xml");
-    if (!file.open(QIODevice::ReadOnly))
+QString DataBase::toQString(const double& h, const double& m, const double& s) {
+    QString textTime = QString("%1:%2:%3")
+            .arg(static_cast<int>(h), 2, 10, QChar('0'))
+            .arg(static_cast<int>(m), 2, 10, QChar('0'))
+            .arg(static_cast<int>(s), 2, 10, QChar('0'));
+    return textTime;
+}
+
+int DataBase::append(const QString &projectName, const QString &projectTime) {
+    /**
+     * Add data into userplans.xml
+     *
+     * @projectName	: Project Name
+     * @projectTime	: Project duration
+     *
+     * @return 0:	write finished,
+     * 		   -1:	file load/open problem
+     * 		   1:	data existed, no write needed
+     */
+    QDomDocument doc;
+    QFile file("userplans.xml");
+    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
+        qDebug("Open file failed");
         return -1;
-    if (!doc.setContent(&file)) {
+    }
+    if (file.size() == 0) {
+        qDebug() << "file is null";
+        QDomElement newRoot = doc.createElement("userPlans");
+        doc.appendChild(newRoot);
+    }
+    else if (!doc.setContent(&file)) {
         file.close();
+        qDebug() << "Load content failed";
         return -1;
     }
 
     // Find the root element
-    QDomElement docElem = doc.documentElement();
+    QDomElement root = doc.documentElement();
+    if (!dataExisted(root, projectName)) {
+        root.appendChild(nodeProject(doc, projectName, projectTime));
+        QTextStream ts(&file);
+        file.resize(0);
+        ts<<doc.toString();
+        return 0;
+    } else {
+        return 1;
+    }
+}
 
 bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
 {

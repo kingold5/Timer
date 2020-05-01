@@ -34,3 +34,8 @@ void MainWindow::on_PushButtonOK_clicked()
     showtimer = new ShowTimer(this, time);
     showtimer ->show();
 }
+
+    int result = data->append(ui->planName->text(),
+                              ui->timeHour->value(),
+                              ui->timeMin->value(),
+                              ui->timeSec->value());
