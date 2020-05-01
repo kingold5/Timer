@@ -3,10 +3,18 @@
 #include <QMessageBox>
 #include "database.hpp"
 
-
-DataBase::DataBase(QWidget* p) : parent(p)
+DataBase::DataBase() :
+    currentName(""),
+    currentDuration(""),
+    oldName(""),
+    oldDuration("")
 {
-    ;
+
+}
+
+void DataBase::setProject(const QString &projectName, const QString &projectTime) {
+    currentName = projectName;
+    currentDuration = projectTime;
 }
 
 int DataBase::appendTemp(const QString &projectName, const QString &projectTime)

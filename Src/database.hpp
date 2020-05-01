@@ -6,8 +6,9 @@
 class DataBase
 {
 public:
-    DataBase(QWidget* p);
+    DataBase();
 
+    void setProject(const QString& projectName, const QString& projectTime);
     int appendTemp(const QString &projectName, const QString &projectTime);
     int loadTemp(QString* projectName, double* h, double* m, double* s);
     int loadTemp(QString* projectName, QString* projectTime);
@@ -19,6 +20,10 @@ public:
 
 private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
+    QString toQString(const double &h, const double &m, const double &s);
+    QString currentName;
+    QString currentDuration;
+    QString oldName;
+    QString oldDuration;
 };
-
 #endif // DATABASE_H
