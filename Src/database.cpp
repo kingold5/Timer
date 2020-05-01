@@ -122,21 +122,23 @@ int DataBase::dataExisted(const QString *projectName)
     // Find the root element
     QDomElement docElem = doc.documentElement();
 
+bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
+{
     // First child of root element
-    QDomNode n = docElem.firstChild();
+    QDomNode n = root.firstChild();
     while (!n.isNull()) {
         QDomElement e = n.toElement();
         if (!e.isNull()) {
-            if (e.tagName() == "projects" && e.attribute("name", "") == *projectName) {
+            if (e.attribute("name", "") == projectName) {
                 qDebug() << "Project name exists.";
-                return 0;
+                return true;
             }
         }
         n = n.nextSibling();
     }
 
     qDebug() << "Project name can be used.";
-    return 1;
+    return false;
 }
 
 bool DataBase::toTime(QString time, double *h, double* m, double* s) {
