@@ -4,7 +4,7 @@
 #include "ui_showtimer.h"
 
 
-ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime) :
+ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime, const QString name) :
     QDialog(parent),
     ui(new Ui::ShowTimer),
     time(ptime),
@@ -16,7 +16,7 @@ ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime) :
     ui->lcdTimer->setSegmentStyle(QLCDNumber::Filled);
     ui->lcdTimer->display(textTime);
     ui->pushButtonStop->setEnabled(false);
-    // ui->lcdTimer->display("00:00:00");
+    ui->labelProName->setText(name);
     connect(timer, SIGNAL(timeout()), this, SLOT(display()));
     timer->start(1000);
 
