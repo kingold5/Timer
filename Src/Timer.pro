@@ -1,5 +1,6 @@
 QT += core gui \
-        multimedia
+        multimedia \
+        xml
 
 greaterThan(QT_MAJOR_VERSION, 4) : QT += widgets
 
@@ -10,15 +11,17 @@ SOURCES += \
     main.cpp \
     mainWindow.cpp \
     Countdown.cpp \
-    showtimer.cpp
+    showtimer.cpp \
+    database.cpp
 
 HEADERS += \
     Countdown.hpp \
     mainWindow.h \
-    showtimer.h
+    showtimer.h \
+    database.hpp
 
 FORMS += mainWindow.ui \
     showtimer.ui
 
 RESOURCES += \
-    res.qrc
+    Rcs.qrc
