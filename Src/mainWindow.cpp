@@ -28,10 +28,10 @@ void MainWindow::on_PushButtonOK_clicked()
     time->setTimer(ui->timeHour->value(),
                    ui->timeMin->value(),
                    ui->timeSec->value());
-    QString projectName = ui->planName->text();
-    QString projectTime = time->timeQString();
-    data->writeTemp(projectName, projectTime);
-    showtimer = new ShowTimer(this, time);
+    // data->setProject(ui->planName->text(), time->timeQString());
+    data->appendTemp(ui->planName->text(), time->timeQString());
+
+    showtimer = new ShowTimer(this, time, ui->planName->text());
     showtimer ->show();
 }
 
