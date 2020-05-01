@@ -59,3 +59,16 @@ void ShowTimer::on_pushButtonStop_clicked()
 {
     efx->stop();
 }
+
+void ShowTimer::on_pushButtonPause_clicked()
+{
+    QString pause = "Pause Clock";
+    QString start = "Start Clock";
+    if (ui->pushButtonPause->text() == pause) {
+        timer->stop();
+        ui->pushButtonPause->setText(start);
+    } else {
+        timer->start(1000);
+        ui->pushButtonPause->setText(pause);
+    }
+}

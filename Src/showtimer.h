@@ -26,6 +26,8 @@ private slots:
 
     void on_pushButtonStop_clicked();
 
+    void on_pushButtonPause_clicked();
+
 private:
     void alarm();
 
