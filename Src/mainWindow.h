@@ -22,6 +22,8 @@ public:
 private slots:
     void on_PushButtonOK_clicked();
 
+    void on_PushButtonAdd_clicked();
+
 private:
     Ui::MainWindow *ui;
     CountDown* time;

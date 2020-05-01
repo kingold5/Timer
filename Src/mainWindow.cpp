@@ -1,3 +1,4 @@
+#include <QMessageBox>
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
@@ -35,7 +36,27 @@ void MainWindow::on_PushButtonOK_clicked()
     showtimer ->show();
 }
 
+void MainWindow::on_PushButtonAdd_clicked()
+{
     int result = data->append(ui->planName->text(),
                               ui->timeHour->value(),
                               ui->timeMin->value(),
                               ui->timeSec->value());
+    switch (result) {
+    case -1: {
+        // File operation failed
+        QMessageBox::critical(this, "Failed", "File operation failed!");
+        break;
+    }
+    case 1: {
+        // Data exists
+        QMessageBox::information(this, "Failed", "Project name exists, please input another one.");
+        break;
+    }
+    default: {
+        // Succeed
+        QMessageBox::information(this, "Succeed", "Projects added!");
+        break;
+    }
+    }
+}
