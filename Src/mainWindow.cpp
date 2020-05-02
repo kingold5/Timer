@@ -33,7 +33,7 @@ void MainWindow::on_PushButtonOK_clicked()
     // data->setProject(ui->planName->text(), time->timeQString());
     data->appendTemp(ui->planName->text(), time->timeQString());
 
-    showtimer = new ShowTimer(this, time, ui->planName->text());
+    showtimer = new ShowTimer(time, ui->planName->text(), this);
     showtimer ->show();
 }
 

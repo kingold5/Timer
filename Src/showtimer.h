@@ -15,7 +15,7 @@ class ShowTimer : public QDialog
     Q_OBJECT
 
 public:
-    explicit ShowTimer(QWidget* parent = 0, CountDown* ptime=0, const QString name=QString(""));
+    explicit ShowTimer(CountDown* ptime, const QString& name, QWidget* parent = 0);
     ~ShowTimer();
 
 public slots:

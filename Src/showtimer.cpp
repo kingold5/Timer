@@ -4,7 +4,7 @@
 #include "ui_showtimer.h"
 
 
-ShowTimer::ShowTimer(QWidget *parent, CountDown* ptime, const QString name) :
+ShowTimer::ShowTimer(CountDown* ptime, const QString &name, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ShowTimer),
     time(ptime),
