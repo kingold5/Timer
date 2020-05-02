@@ -17,46 +17,6 @@ void DataBase::setProject(const QString &projectName, const QString &projectTime
     currentDuration = projectTime;
 }
 
-int DataBase::appendTemp(const QString &projectName, const QString &projectTime)
-{
-    QDomDocument doc;
-    QFile file("tempplans.xml");
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        qDebug("Open file failed");
-        return -1;
-    }
-    if (file.size() == 0) {
-        qDebug() << "file is null";
-        QDomElement newRoot = doc.createElement("tempPlans");
-        doc.appendChild(newRoot);
-    }
-    else if (!doc.setContent(&file)) {
-        file.close();
-        qDebug() << "Load content failed";
-        return -1;
-    }
-
-    // Find the root element
-    QDomElement root = doc.documentElement();
-    // Find latest project, if it is not identical to the current project
-    // append the current project.
-    QDomNode n = root.lastChild();
-    QDomElement e = n.toElement();
-    if (!e.isNull()) {
-        if (e.attribute("name", "") == projectName && e.attribute("duration", "") == projectTime) {
-            // Same project, no need to write
-            return 1;
-        }
-    }
-
-    root.appendChild(nodeProject(doc, projectName, projectTime));
-
-    QTextStream ts(&file);
-    file.resize(0);
-    ts<<doc.toString();
-    return 0;
-}
-
 int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
     /**
      * Load the lastest plan from tempplans.xml
@@ -99,40 +59,55 @@ int DataBase::load(QString *projectName, double h, double m, double s) {
     return 0;
 }
 
-int DataBase::append(const QString &projectName, const double &h, const double &m, const double &s) {
-    QString projectTime = toQString(h, m, s);
-    int result = append(projectName, projectTime);
-    return result;
-}
-
-QString DataBase::toQString(const double& h, const double& m, const double& s) {
-    QString textTime = QString("%1:%2:%3")
-            .arg(static_cast<int>(h), 2, 10, QChar('0'))
-            .arg(static_cast<int>(m), 2, 10, QChar('0'))
-            .arg(static_cast<int>(s), 2, 10, QChar('0'));
-    return textTime;
-}
-
-int DataBase::append(const QString &projectName, const QString &projectTime) {
+int DataBase::append(const QString &fileName, const QString &projectName, const double &h, const double &m, const double &s) {
     /**
-     * Add data into userplans.xml
+     * Add data into userplans.xml/tempplans.xml
      *
+     * @fileName : xml file name
      * @projectName	: Project Name
-     * @projectTime	: Project duration
+     * @h :	hour
+     * @m : minute
+     * @s : second
      *
      * @return 0:	write finished,
      * 		   -1:	file load/open problem
      * 		   1:	data existed, no write needed
      */
+    QString projectTime = toQString(h, m, s);
+    return append(fileName, projectName, projectTime);
+}
+
+int DataBase::append(const QString &fileName, const QString &projectName, const QString &projectTime) {
+    /**
+     * Add data into userplans.xml/tempplans.xml
+     *
+     * @fileName : xml file name
+     * @projectName	: Project Name
+     * @projectName : Project Time
+     *
+     * @return 0:	write finished,
+     * 		   -1:	file load/open problem
+     * 		   1:	data existed, no write needed
+     */
+    QString rootTag;
+    if (fileName == "userplans.xml") {
+        rootTag = "userPlans";
+    } else if (fileName == "tempplans.xml") {
+        rootTag = "tempPlans";
+    } else {
+        qDebug() << "Wrong filename";
+        return -1;
+    }
+
     QDomDocument doc;
-    QFile file("userplans.xml");
+    QFile file(fileName);
     if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
         qDebug("Open file failed");
         return -1;
     }
     if (file.size() == 0) {
         qDebug() << "file is null";
-        QDomElement newRoot = doc.createElement("userPlans");
+        QDomElement newRoot = doc.createElement(rootTag);
         doc.appendChild(newRoot);
     }
     else if (!doc.setContent(&file)) {
@@ -143,15 +118,30 @@ int DataBase::append(const QString &projectName, const QString &projectTime) {
 
     // Find the root element
     QDomElement root = doc.documentElement();
-    if (!dataExisted(root, projectName)) {
-        root.appendChild(nodeProject(doc, projectName, projectTime));
-        QTextStream ts(&file);
-        file.resize(0);
-        ts<<doc.toString();
-        return 0;
-    } else {
-        return 1;
+    QDomNode n = root.lastChild();
+    QDomElement e = n.toElement();
+    if (!e.isNull()) {
+        if (e.attribute("name", "") == projectName && e.attribute("duration", "") == projectTime) {
+            // Same project, no need to write
+            return 1;
+        }
     }
+
+    root.appendChild(nodeProject(doc, projectName, projectTime));
+
+    QTextStream ts(&file);
+    file.resize(0);
+    ts<<doc.toString();
+    return 0;
+
+}
+
+QString DataBase::toQString(const double& h, const double& m, const double& s) {
+    QString textTime = QString("%1:%2:%3")
+            .arg(static_cast<int>(h), 2, 10, QChar('0'))
+            .arg(static_cast<int>(m), 2, 10, QChar('0'))
+            .arg(static_cast<int>(s), 2, 10, QChar('0'));
+    return textTime;
 }
 
 bool DataBase::dataExisted(QDomElement& root, const QString &projectName)

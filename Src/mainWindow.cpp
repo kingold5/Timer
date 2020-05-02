@@ -31,7 +31,11 @@ void MainWindow::on_PushButtonOK_clicked()
                    ui->timeMin->value(),
                    ui->timeSec->value());
     // data->setProject(ui->planName->text(), time->timeQString());
-    data->appendTemp(ui->planName->text(), time->timeQString());
+    data->append("tempplans.xml",
+                 ui->planName->text(),
+                 ui->timeHour->value(),
+                 ui->timeMin->value(),
+                 ui->timeSec->value());
 
     showtimer = new ShowTimer(time, ui->planName->text(), this);
     showtimer ->show();
@@ -39,7 +43,8 @@ void MainWindow::on_PushButtonOK_clicked()
 
 void MainWindow::on_PushButtonAdd_clicked()
 {
-    int result = data->append(ui->planName->text(),
+    int result = data->append("userplans.xml",
+                              ui->planName->text(),
                               ui->timeHour->value(),
                               ui->timeMin->value(),
                               ui->timeSec->value());
