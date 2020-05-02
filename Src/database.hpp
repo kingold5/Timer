@@ -15,11 +15,12 @@ public:
     int append(const QString &fileName, const QString &projectName, const QString &projectTime);
     int load(QString* projectName, double h, double m, double s);
     bool dataExisted(QDomElement& root, const QString& projectName);
-    bool toTime(QString time, double *h, double *m, double *s);
+    QString toTimeQString(const double &h, const double &m, const double &s);
+    bool toTimeDigital(const QString &time, double *h, double *m, double *s);
 
 private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
-    QString toQString(const double &h, const double &m, const double &s);
+
     QString currentName;
     QString currentDuration;
     QString oldName;

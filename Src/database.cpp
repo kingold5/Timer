@@ -46,7 +46,7 @@ int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
     QDomElement e = n.toElement();
     if (!e.isNull()) {
         QString time = e.attribute("duration", "");
-        if (toTime(time, h, m, s)) {
+        if (toTimeDigital(time, h, m, s)) {
             *projectName = e.attribute("name", "");
             return 0;
         }
@@ -73,7 +73,7 @@ int DataBase::append(const QString &fileName, const QString &projectName, const 
      * 		   -1:	file load/open problem
      * 		   1:	data existed, no write needed
      */
-    QString projectTime = toQString(h, m, s);
+    QString projectTime = toTimeQString(h, m, s);
     return append(fileName, projectName, projectTime);
 }
 
@@ -136,14 +136,6 @@ int DataBase::append(const QString &fileName, const QString &projectName, const 
 
 }
 
-QString DataBase::toQString(const double& h, const double& m, const double& s) {
-    QString textTime = QString("%1:%2:%3")
-            .arg(static_cast<int>(h), 2, 10, QChar('0'))
-            .arg(static_cast<int>(m), 2, 10, QChar('0'))
-            .arg(static_cast<int>(s), 2, 10, QChar('0'));
-    return textTime;
-}
-
 bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
 {
     // First child of root element
@@ -163,7 +155,15 @@ bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
     return false;
 }
 
-bool DataBase::toTime(QString time, double *h, double* m, double* s) {
+QString DataBase::toTimeQString(const double &h, const double &m, const double &s) {
+    QString textTime = QString("%1:%2:%3")
+            .arg(static_cast<int>(h), 2, 10, QChar('0'))
+            .arg(static_cast<int>(m), 2, 10, QChar('0'))
+            .arg(static_cast<int>(s), 2, 10, QChar('0'));
+    return textTime;
+}
+
+bool DataBase::toTimeDigital(const QString &time, double *h, double* m, double* s) {
     bool flagh, flagm, flags;
     if (!time.isEmpty()) {
         double hour = time.split(":")[0].toDouble(&flagh);
