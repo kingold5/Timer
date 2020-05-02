@@ -22,6 +22,8 @@ MainWindow::MainWindow(QWidget *parent) :
 
 MainWindow::~MainWindow()
 {
+    delete data;
+    delete time;
     delete ui;
 }
 
@@ -38,6 +40,7 @@ void MainWindow::on_PushButtonOK_clicked()
                  ui->timeSec->value());
 
     showtimer = new ShowTimer(time, ui->planName->text(), this);
+    showtimer->setAttribute(Qt::WA_DeleteOnClose);
     showtimer ->show();
 }
 
