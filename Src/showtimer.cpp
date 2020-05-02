@@ -28,6 +28,7 @@ ShowTimer::ShowTimer(CountDown* ptime, const QString &name, QWidget *parent) :
 
 ShowTimer::~ShowTimer()
 {
+    delete efx;
     delete ui;
 }
 
