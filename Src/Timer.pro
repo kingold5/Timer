@@ -14,16 +14,20 @@ SOURCES += \
     mainWindow.cpp \
     Countdown.cpp \
     showtimer.cpp \
-    database.cpp
+    database.cpp \
+    temphistory.cpp
 
 HEADERS += \
     Countdown.hpp \
     mainWindow.h \
+    projectsstruct.h \
     showtimer.h \
-    database.hpp
+    database.hpp \
+    temphistory.h
 
 FORMS += mainWindow.ui \
-    showtimer.ui
+    showtimer.ui \
+    temphistory.ui
 
 RESOURCES += \
     Rcs.qrc
