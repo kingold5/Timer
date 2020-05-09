@@ -55,7 +55,35 @@ int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
     return 1;
 }
 
-int DataBase::load(QString *projectName, double h, double m, double s) {
+int DataBase::loadAll(const QString &fileName, QVector<Projects> &projectAll) {
+    QFile file(fileName);
+    QDomDocument doc;
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Open file failed";
+        return -1;
+    }
+    if (!doc.setContent(&file)) {
+        qDebug() << "Load file failed";
+        file.close();
+        return -1;
+    }
+
+    double hour, min, sec;
+    QDomNodeList nodes = doc.elementsByTagName("projects");
+    for (int i=0; i<nodes.count(); ++i) {
+        QDomElement element = nodes.at(i).toElement();
+        toTimeDigital(element.attribute("duration", ""), &hour, &min, &sec);
+        Projects newProject = {i,
+                               element.attribute("name", ""),
+                               element.attribute("duration", ""),
+                               hour,
+                               min,
+                               sec,
+                               element.firstChildElement("createDate").text()};
+
+        projectAll.append(newProject);
+    }
+
     return 0;
 }
 
