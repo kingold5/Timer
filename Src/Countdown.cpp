@@ -23,13 +23,13 @@ void CountDown::setTimer(double h, double m, double s) {
     toSec();
 }
 
-void CountDown::getTimer(int *h, int *m, int *s) {
+void CountDown::getTimer(int *h, int *m, int *s) const {
     *h = hour;
     *m = minute;
     *s = second;
 }
 
-QString CountDown::timeQString() {
+QString CountDown::timeQString() const {
     QString time = QString("%1:%2:%3")
             .arg(hour, 2, 10, QChar('0'))
             .arg(minute, 2, 10, QChar('0'))
