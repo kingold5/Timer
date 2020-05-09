@@ -17,7 +17,7 @@ void DataBase::setProject(const QString &projectName, const QString &projectTime
     currentDuration = projectTime;
 }
 
-int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
+int DataBase::loadTemp(QString &projectName, Time &projectTime) {
     /**
      * Load the lastest plan from tempplans.xml
      *
@@ -45,9 +45,8 @@ int DataBase::loadTemp(QString* projectName, double* h, double* m, double *s) {
     QDomNode n = docElem.lastChild();
     QDomElement e = n.toElement();
     if (!e.isNull()) {
-        QString time = e.attribute("duration", "");
-        if (toTimeDigital(time, h, m, s)) {
-            *projectName = e.attribute("name", "");
+        if (toTimeDigital(e.attribute("duration", ""), projectTime)) {
+            projectName = e.attribute("name", "");
             return 0;
         }
     }
@@ -68,17 +67,15 @@ int DataBase::loadAll(const QString &fileName, QVector<Projects> &projectAll) {
         return -1;
     }
 
-    double hour, min, sec;
+    Time projectTime;
     QDomNodeList nodes = doc.elementsByTagName("projects");
     for (int i=0; i<nodes.count(); ++i) {
         QDomElement element = nodes.at(i).toElement();
-        toTimeDigital(element.attribute("duration", ""), &hour, &min, &sec);
+        toTimeDigital(element.attribute("duration", ""), projectTime);
         Projects newProject = {i,
                                element.attribute("name", ""),
                                element.attribute("duration", ""),
-                               hour,
-                               min,
-                               sec,
+                               projectTime,
                                element.firstChildElement("createDate").text()};
 
         projectAll.append(newProject);
@@ -87,7 +84,7 @@ int DataBase::loadAll(const QString &fileName, QVector<Projects> &projectAll) {
     return 0;
 }
 
-int DataBase::append(const QString &fileName, const QString &projectName, const double &h, const double &m, const double &s) {
+int DataBase::append(const QString &fileName, const QString &projectName, const Time &projectTime) {
     /**
      * Add data into userplans.xml/tempplans.xml
      *
@@ -101,8 +98,8 @@ int DataBase::append(const QString &fileName, const QString &projectName, const 
      * 		   -1:	file load/open problem
      * 		   1:	data existed, no write needed
      */
-    QString projectTime = toTimeQString(h, m, s);
-    return append(fileName, projectName, projectTime);
+    QString timeQString = toTimeQString(projectTime);
+    return append(fileName, projectName, timeQString);
 }
 
 int DataBase::append(const QString &fileName, const QString &projectName, const QString &projectTime) {
@@ -183,25 +180,25 @@ bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
     return false;
 }
 
-QString DataBase::toTimeQString(const double &h, const double &m, const double &s) {
+QString DataBase::toTimeQString(const Time &timeDigital) {
     QString textTime = QString("%1:%2:%3")
-            .arg(static_cast<int>(h), 2, 10, QChar('0'))
-            .arg(static_cast<int>(m), 2, 10, QChar('0'))
-            .arg(static_cast<int>(s), 2, 10, QChar('0'));
+            .arg(static_cast<int>(timeDigital.hour), 2, 10, QChar('0'))
+            .arg(static_cast<int>(timeDigital.minute), 2, 10, QChar('0'))
+            .arg(static_cast<int>(timeDigital.second), 2, 10, QChar('0'));
     return textTime;
 }
 
-bool DataBase::toTimeDigital(const QString &time, double *h, double* m, double* s) {
+bool DataBase::toTimeDigital(const QString &timeQString, Time &timeDigital) {
     bool flagh, flagm, flags;
-    if (!time.isEmpty()) {
-        double hour = time.split(":")[0].toDouble(&flagh);
-        double min = time.split(":")[1].toDouble(&flagm);
-        double sec = time.split(":")[2].toDouble(&flags);
+    if (!timeQString.isEmpty()) {
+        double hour = timeQString.split(":")[0].toDouble(&flagh);
+        double min = timeQString.split(":")[1].toDouble(&flagm);
+        double sec = timeQString.split(":")[2].toDouble(&flags);
 
         if (flagh && flagm && flags) {
-            *h = hour;
-            *m = min;
-            *s = sec;
+            timeDigital.hour = hour;
+            timeDigital.minute = min;
+            timeDigital.second = sec;
         } else {
             return false;
         }

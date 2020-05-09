@@ -5,6 +5,7 @@
 #include "Countdown.hpp"
 #include "showtimer.h"
 #include "database.hpp"
+#include "projectsstruct.h"
 
 
 namespace Ui {
@@ -29,6 +30,8 @@ private:
     CountDown* time;
     ShowTimer* showtimer;
     DataBase* data;
+    QVector<Projects> addedProjects;
+    QVector<Projects> tempProjects;
 };
 
 #endif // MAINWINDOW_H

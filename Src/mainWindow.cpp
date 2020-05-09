@@ -11,13 +11,18 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Timer");
-    double hour=0.0, min=0.0, sec=0.0;
+    // Guess vector will take 20 projects
+    addedProjects.reserve(30000);
+    tempProjects.reserve(30000);
+    data->loadAll("tempplans.xml", tempProjects);
+
+    Time projectTime;
     QString projectName="";
-    data->loadTemp(&projectName, &hour, &min, &sec);
+    data->loadTemp(projectName, projectTime);
     ui->planName->setText(projectName);
-    ui->timeHour->setValue(hour);
-    ui->timeMin->setValue(min);
-    ui->timeSec->setValue(sec);
+    ui->timeHour->setValue(projectTime.hour);
+    ui->timeMin->setValue(projectTime.minute);
+    ui->timeSec->setValue(projectTime.second);
 }
 
 MainWindow::~MainWindow()
@@ -29,15 +34,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_PushButtonOK_clicked()
 {
-    time->setTimer(ui->timeHour->value(),
-                   ui->timeMin->value(),
-                   ui->timeSec->value());
-    // data->setProject(ui->planName->text(), time->timeQString());
+    Time projectTime = {ui->timeHour->value(),
+                        ui->timeMin->value(),
+                        ui->timeSec->value()};
+    time->setTimer(projectTime);
     data->append("tempplans.xml",
                  ui->planName->text(),
-                 ui->timeHour->value(),
-                 ui->timeMin->value(),
-                 ui->timeSec->value());
+                 projectTime);
 
     showtimer = new ShowTimer(time, ui->planName->text(), this);
     showtimer->setAttribute(Qt::WA_DeleteOnClose);
@@ -46,11 +49,12 @@ void MainWindow::on_PushButtonOK_clicked()
 
 void MainWindow::on_PushButtonAdd_clicked()
 {
+    Time projectTime = {ui->timeHour->value(),
+                        ui->timeMin->value(),
+                        ui->timeSec->value()};
     int result = data->append("userplans.xml",
                               ui->planName->text(),
-                              ui->timeHour->value(),
-                              ui->timeMin->value(),
-                              ui->timeSec->value());
+                              projectTime);
     switch (result) {
     case -1: {
         // File operation failed
