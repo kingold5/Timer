@@ -1,13 +1,11 @@
 #include <QMessageBox>
 #include "mainWindow.h"
-#include "temphistory.h"
 #include "ui_mainWindow.h"
 
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
-    time(new CountDown),
     data(new DataBase)
 {
     ui->setupUi(this);
@@ -25,7 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
 MainWindow::~MainWindow()
 {
     delete data;
-    delete time;
     delete ui;
 }
 
@@ -34,12 +31,11 @@ void MainWindow::on_PushButtonRunNow_clicked()
     Time projectTime = {ui->timeHour->value(),
                         ui->timeMin->value(),
                         ui->timeSec->value()};
-    time->setTimer(projectTime);
     data->append("tempplans.xml",
                  ui->planName->text(),
                  projectTime);
 
-    showtimer = new ShowTimer(time, ui->planName->text(), this);
+    showtimer = new ShowTimer(projectTime, ui->planName->text(), this);
     showtimer->setAttribute(Qt::WA_DeleteOnClose);
     showtimer ->show();
 }

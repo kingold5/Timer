@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Countdown.hpp"
 #include "showtimer.h"
 #include "temphistory.h"
 #include "database.hpp"
@@ -30,7 +29,6 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
-    CountDown* time;
     ShowTimer* showtimer;
     TempHistory *history;
     DataBase* data;
