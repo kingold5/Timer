@@ -105,3 +105,13 @@ Qt::ItemFlags ProjectsModel::flags(const QModelIndex &index) const
 
     return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
+
+bool ProjectsModel::removeRows(int row, int count, const QModelIndex &parent)
+{
+    beginRemoveRows(parent, row, row+count-1);
+    QDomNode node = nodes.at(row);
+    node.parentNode().removeChild(node);
+    endRemoveRows();
+
+    return true;
+}
