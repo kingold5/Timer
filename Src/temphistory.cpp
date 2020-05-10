@@ -24,7 +24,7 @@ TempHistory::TempHistory(QWidget *parent) :
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
-    // ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
 TempHistory::~TempHistory()
@@ -46,8 +46,6 @@ void TempHistory::on_pushButtonRun_clicked()
     if (index.isValid()) {
         QString projectName = ui->tableView->model()->index(index.row(), 0).data().toString();
         QString projectTime = ui->tableView->model()->index(index.row(), 1).data().toString();
-        Time timeDigital;
-        DataBase::toTimeDigital(ui->tableView->model()->index(index.row(), 1).data().toString(), timeDigital);
 
         showtimer = new ShowTimer(projectTime, projectName, this);
         showtimer->setAttribute(Qt::WA_DeleteOnClose);
@@ -68,4 +66,12 @@ void TempHistory::on_pushButtonCancel_clicked()
 {
     file.close();
     this->close();
+}
+
+void TempHistory::on_pushButtonDelete_clicked()
+{
+    QModelIndex index = ui->tableView->currentIndex();
+    if (index.isValid()) {
+        ui->tableView->model()->removeRows(index.row(), 1);
+    }
 }

@@ -26,6 +26,8 @@ private slots:
 
     void on_pushButtonCancel_clicked();
 
+    void on_pushButtonDelete_clicked();
+
 private:
     Ui::TempHistory *ui;
     QString fileName = "tempplans.xml";
