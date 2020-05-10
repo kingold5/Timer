@@ -22,7 +22,7 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_PushButtonOK_clicked();
+    void on_PushButtonRunNow_clicked();
 
     void on_PushButtonAdd_clicked();
 

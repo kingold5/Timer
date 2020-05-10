@@ -29,7 +29,7 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::on_PushButtonOK_clicked()
+void MainWindow::on_PushButtonRunNow_clicked()
 {
     Time projectTime = {ui->timeHour->value(),
                         ui->timeMin->value(),

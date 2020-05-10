@@ -121,7 +121,7 @@
         </widget>
        </item>
        <item>
-        <widget class="QPushButton" name="PushButtonOK">
+        <widget class="QPushButton" name="PushButtonRunNow">
          <property name="text">
           <string>Run Now</string>
          </property>
@@ -159,7 +159,7 @@
  <tabstops>
   <tabstop>planName</tabstop>
   <tabstop>timeHour</tabstop>
-  <tabstop>PushButtonOK</tabstop>
+  <tabstop>PushButtonRunNow</tabstop>
   <tabstop>pushButtonCancel</tabstop>
  </tabstops>
  <resources/>
