@@ -16,8 +16,8 @@ public:
     int append(const QString &fileName, const QString &projectName, const QString &projectTime);
     int loadAll(const QString &fileName, QVector<Projects> &projectAll);
     bool dataExisted(QDomElement& root, const QString& projectName);
-    QString toTimeQString(const Time &timeDigital);
-    bool toTimeDigital(const QString &timeQString, Time &timeDigital);
+    static QString toTimeQString(const Time &timeDigital);
+    static bool toTimeDigital(const QString &timeQString, Time &timeDigital);
 
 private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
