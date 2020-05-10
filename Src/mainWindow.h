@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Countdown.hpp"
 #include "showtimer.h"
+#include "temphistory.h"
 #include "database.hpp"
 #include "projectsstruct.h"
 
@@ -25,13 +26,14 @@ private slots:
 
     void on_PushButtonAdd_clicked();
 
+    void on_actionHistory_triggered();
+
 private:
     Ui::MainWindow *ui;
     CountDown* time;
     ShowTimer* showtimer;
+    TempHistory *history;
     DataBase* data;
-    QVector<Projects> addedProjects;
-    QVector<Projects> tempProjects;
 };
 
 #endif // MAINWINDOW_H

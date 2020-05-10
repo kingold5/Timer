@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include "mainWindow.h"
+#include "temphistory.h"
 #include "ui_mainWindow.h"
 
 
@@ -11,10 +12,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Timer");
-    // Guess vector will take 20 projects
-    addedProjects.reserve(30000);
-    tempProjects.reserve(30000);
-    data->loadAll("tempplans.xml", tempProjects);
 
     Time projectTime;
     QString projectName="";
@@ -72,4 +69,11 @@ void MainWindow::on_PushButtonAdd_clicked()
         break;
     }
     }
+}
+
+void MainWindow::on_actionHistory_triggered()
+{
+    history = new TempHistory(this);
+    history->setAttribute(Qt::WA_DeleteOnClose);
+    history->show();
 }

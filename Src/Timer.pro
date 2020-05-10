@@ -13,6 +13,7 @@ SOURCES += \
     main.cpp \
     mainWindow.cpp \
     Countdown.cpp \
+    projectsmodel.cpp \
     showtimer.cpp \
     database.cpp \
     temphistory.cpp
@@ -20,6 +21,7 @@ SOURCES += \
 HEADERS += \
     Countdown.hpp \
     mainWindow.h \
+    projectsmodel.h \
     projectsstruct.h \
     showtimer.h \
     database.hpp \
@@ -31,3 +33,5 @@ FORMS += mainWindow.ui \
 
 RESOURCES += \
     Rcs.qrc
+
+DISTFILES +=

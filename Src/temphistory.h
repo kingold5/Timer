@@ -2,21 +2,35 @@
 #define TEMPHISTORY_H
 
 #include <QWidget>
+#include <QTableView>
+#include <QDomDocument>
+#include "projectsmodel.h"
 
 namespace Ui {
-class temphistory;
+class TempHistory;
 }
 
-class temphistory : public QWidget
+class TempHistory : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit temphistory(QWidget *parent = nullptr);
-    ~temphistory();
+    explicit TempHistory(QWidget *parent = nullptr);
+    ~TempHistory();
+
+private slots:
+    void on_pushButtonRun_clicked();
+
+    void on_pushButtonEdit_clicked();
+
+    void on_pushButtonCancel_clicked();
 
 private:
-    Ui::temphistory *ui;
+    Ui::TempHistory *ui;
+    QString fileName = "tempplans.xml";
+    QFile file;
+    QDomDocument doc;
+    ProjectsModel *tempModel;
 };
 
 #endif // TEMPHISTORY_H
