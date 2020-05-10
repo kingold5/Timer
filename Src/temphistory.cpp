@@ -2,6 +2,7 @@
 #include "temphistory.h"
 #include "projectsmodel.h"
 #include "ui_temphistory.h"
+#include "database.hpp"
 
 TempHistory::TempHistory(QWidget *parent) :
     QWidget(parent),
@@ -41,7 +42,17 @@ TempHistory::~TempHistory()
 
 void TempHistory::on_pushButtonRun_clicked()
 {
-    QString result = ui->tableView->model()->data(ui->tableView->currentIndex()).toString();
+    QModelIndex index = ui->tableView->currentIndex();
+    if (index.isValid()) {
+        QString projectName = ui->tableView->model()->index(index.row(), 0).data().toString();
+        QString projectTime = ui->tableView->model()->index(index.row(), 1).data().toString();
+        Time timeDigital;
+        DataBase::toTimeDigital(ui->tableView->model()->index(index.row(), 1).data().toString(), timeDigital);
+
+        showtimer = new ShowTimer(projectTime, projectName, this);
+        showtimer->setAttribute(Qt::WA_DeleteOnClose);
+        showtimer ->show();
+    }
 }
 
 void TempHistory::on_pushButtonEdit_clicked()

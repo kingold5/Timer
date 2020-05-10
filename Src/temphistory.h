@@ -5,6 +5,7 @@
 #include <QTableView>
 #include <QDomDocument>
 #include "projectsmodel.h"
+#include "showtimer.h"
 
 namespace Ui {
 class TempHistory;
@@ -31,6 +32,7 @@ private:
     QFile file;
     QDomDocument doc;
     ProjectsModel *tempModel;
+    ShowTimer *showtimer;
 };
 
 #endif // TEMPHISTORY_H
