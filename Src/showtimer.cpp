@@ -2,15 +2,32 @@
 #include <QLCDNumber>
 #include "showtimer.h"
 #include "ui_showtimer.h"
+#include "database.hpp"
 
 
-ShowTimer::ShowTimer(CountDown* ptime, const QString &name, QWidget *parent) :
+ShowTimer::ShowTimer(const Time &timeDigital, const QString &name, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::ShowTimer),
-    time(ptime),
+    time(new CountDown(timeDigital)),
     timer(new QTimer(this)),
-    textTime(ptime->timeQString()),
+    textTime(time->timeQString()),
     efx(new QSoundEffect(this))
+{
+    constructor(name);
+}
+
+ShowTimer::ShowTimer(const QString &timeQString, const QString& name, QWidget* parent) :
+    QDialog(parent),
+    ui(new Ui::ShowTimer),
+    time(new CountDown(timeQString)),
+    timer(new QTimer(this)),
+    textTime(timeQString),
+    efx(new QSoundEffect(this))
+{
+    constructor(name);
+}
+
+void ShowTimer::constructor(const QString &name)
 {
     ui->setupUi(this);
     setWindowTitle("Project");
