@@ -19,8 +19,10 @@ TempHistory::TempHistory(QWidget *parent) :
 
     tempModel = new ProjectsModel(doc, this);
     ui->tableView->setModel(tempModel);
-    ui->tableView->setColumnWidth(2, 230);
+    // ui->tableView->setColumnWidth(2, 230);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->tableView->verticalHeader()->hide();
+    ui->tableView->horizontalHeader()->setStretchLastSection(true);
     // ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
 }
 
@@ -39,6 +41,7 @@ TempHistory::~TempHistory()
 
 void TempHistory::on_pushButtonRun_clicked()
 {
+    QString result = ui->tableView->model()->data(ui->tableView->currentIndex()).toString();
 }
 
 void TempHistory::on_pushButtonEdit_clicked()
