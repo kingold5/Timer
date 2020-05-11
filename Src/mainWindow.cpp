@@ -10,20 +10,25 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Timer");
-
-    Time projectTime;
-    QString projectName="";
-    data->loadTemp(projectName, projectTime);
-    ui->planName->setText(projectName);
-    ui->timeHour->setValue(projectTime.hour);
-    ui->timeMin->setValue(projectTime.minute);
-    ui->timeSec->setValue(projectTime.second);
+    setupProject();
 }
 
 MainWindow::~MainWindow()
 {
     delete data;
     delete ui;
+}
+
+void MainWindow::setupProject()
+{
+    Time projectTime = {0.0, 0.0, 0.0};
+    QString projectName="";
+
+    data->loadTemp(projectName, projectTime);
+    ui->planName->setText(projectName);
+    ui->timeHour->setValue(projectTime.hour);
+    ui->timeMin->setValue(projectTime.minute);
+    ui->timeSec->setValue(projectTime.second);
 }
 
 void MainWindow::on_PushButtonRunNow_clicked()
@@ -36,6 +41,8 @@ void MainWindow::on_PushButtonRunNow_clicked()
                  projectTime);
 
     showtimer = new ShowTimer(projectTime, ui->planName->text(), this);
+    connect(showtimer, SIGNAL(projectChanged()),
+            this, SLOT(setupProject()));
     showtimer->setAttribute(Qt::WA_DeleteOnClose);
     showtimer ->show();
 }

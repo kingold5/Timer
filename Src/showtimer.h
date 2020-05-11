@@ -23,8 +23,8 @@ public:
 protected:
     void constructor(const QString &name);
 
-public slots:
-    void reject();
+signals:
+    void projectChanged();
 
 private slots:
     void reject();

@@ -22,10 +22,10 @@ public:
 
 private slots:
     void on_PushButtonRunNow_clicked();
-
     void on_PushButtonAdd_clicked();
-
     void on_actionHistory_triggered();
+
+    void setupProject();
 
 private:
     Ui::MainWindow *ui;

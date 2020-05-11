@@ -98,6 +98,7 @@ void ShowTimer::on_pushButtonSaveExit_clicked()
     DataBase projectToStore;
     projectToStore.append("tempplans.xml", ui->labelProName->text(),
                           textTime);
+    emit projectChanged();
     reject();
 }
 
