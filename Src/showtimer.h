@@ -27,9 +27,12 @@ public slots:
     void reject();
 
 private slots:
+    void reject();
     void display();
     void on_pushButtonStop_clicked();
     void on_pushButtonPause_clicked();
+    void on_pushButtonSaveExit_clicked();
+    void on_pushButtonCancel_clicked();
 
 private:
     void alarm();

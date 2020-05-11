@@ -56,7 +56,7 @@ void ShowTimer::display()
         ui->pushButtonPause->setEnabled(false);
         alarm();
     }
-    QString textTime = time->timeQString();
+    textTime = time->timeQString();
     ui->lcdTimer->display(textTime);
 }
 
@@ -91,4 +91,17 @@ void ShowTimer::on_pushButtonPause_clicked()
         timer->start(1000);
         ui->pushButtonPause->setText(pause);
     }
+}
+
+void ShowTimer::on_pushButtonSaveExit_clicked()
+{
+    DataBase projectToStore;
+    projectToStore.append("tempplans.xml", ui->labelProName->text(),
+                          textTime);
+    reject();
+}
+
+void ShowTimer::on_pushButtonCancel_clicked()
+{
+    reject();
 }
