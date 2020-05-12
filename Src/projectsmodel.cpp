@@ -76,7 +76,6 @@ bool ProjectsModel::setData(const QModelIndex &index, const QVariant &value, int
         if (!index.isValid()) {
             return false;
         }
-        qDebug() << "in setData";
         if (!value.toString().isEmpty()) {
             QDomElement element = nodes.at(index.row()).toElement();
             switch (index.column()) {
