@@ -6,8 +6,53 @@
 const QString DataBase::k_fileDir = "userdata";
 const QString DataBase::k_tempFile = k_fileDir + "/tempplans.xml";
 const QString DataBase::k_userFile = k_fileDir + "/userplans.xml";
-{
 
+DataBase::DataBase()
+{
+}
+
+bool DataBase::initDBFiles()
+{
+    if (!QDir(k_fileDir).exists() && !QDir().mkdir(k_fileDir)) {
+        return false;
+    }
+    return initHistoryFiles() | initUserFiles();
+}
+
+bool DataBase::initHistoryFiles()
+{
+    QDomDocument doc;
+    QFile file(k_tempFile);
+    if (!file.exists() || file.size() == 0) {
+        if (!loadDocuments(file, doc, QIODevice::WriteOnly)) {
+            // Open file failed
+            return false;
+        }
+        QDomElement newRoot = doc.createElement("tempPlans");
+        doc.appendChild(newRoot);
+        QTextStream ts(&file);
+        ts<<doc.toString();
+        file.close();
+    }
+    return true;
+}
+
+bool DataBase::initUserFiles()
+{
+    QDomDocument doc;
+    QFile file(k_userFile);
+    if (!file.exists() || file.size() == 0) {
+        if (!loadDocuments(file, doc, QIODevice::WriteOnly)) {
+            // Open file failed
+            return false;
+        }
+        QDomElement newRoot = doc.createElement("userPlans");
+        doc.appendChild(newRoot);
+        QTextStream ts(&file);
+        ts<<doc.toString();
+        file.close();
+    }
+    return true;
 }
 
 bool DataBase::loadDocuments(QFile &file, QDomDocument &doc, QIODevice::OpenMode mode)

@@ -2,7 +2,6 @@
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
-
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
@@ -10,6 +9,10 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowTitle("Timer");
+    // Initialize directory and files
+    if (!data->initDBFiles()) {
+        QMessageBox::warning(this, "Warning", "Failed to create database!");
+    }
     setupProject();
 }
 

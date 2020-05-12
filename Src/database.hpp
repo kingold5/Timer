@@ -9,7 +9,7 @@ class DataBase
 public:
     DataBase();
 
-    void setProject(const QString& projectName, const QString& projectTime);
+    bool initDBFiles();
     int loadTemp(QString &projectName, Time &projectTime);
     int loadTemp(QString &projectName, QString &projectTime);
     int append(const QString &fileName, const QString &projectName, const Time &projectTime);
@@ -25,10 +25,7 @@ public:
 
 private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
-
-    QString currentName;
-    QString currentDuration;
-    QString oldName;
-    QString oldDuration;
+    bool initHistoryFiles();
+    bool initUserFiles();
 };
 #endif // DATABASE_H
