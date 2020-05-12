@@ -14,7 +14,6 @@ public:
     int loadTemp(QString &projectName, QString &projectTime);
     int append(const QString &fileName, const QString &projectName, const Time &projectTime);
     int append(const QString &fileName, const QString &projectName, const QString &projectTime);
-    int loadAll(const QString &fileName, QVector<Projects> &projectAll);
     bool dataExisted(QDomElement& root, const QString& projectName);
     static QString toTimeQString(const Time &timeDigital);
     static bool toTimeDigital(const QString &timeQString, Time &timeDigital);

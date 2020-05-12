@@ -52,36 +52,6 @@ int DataBase::loadTemp(QString &projectName, Time &projectTime) {
     return 1;
 }
 
-int DataBase::loadAll(const QString &fileName, QVector<Projects> &projectAll) {
-    QFile file(fileName);
-    QDomDocument doc;
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Open file failed";
-        return -1;
-    }
-    if (!doc.setContent(&file)) {
-        qDebug() << "Load file failed";
-        file.close();
-        return -1;
-    }
-
-    Time projectTime;
-    QDomNodeList nodes = doc.elementsByTagName("projects");
-    for (int i=0; i<nodes.count(); ++i) {
-        QDomElement element = nodes.at(i).toElement();
-        toTimeDigital(element.attribute("duration", ""), projectTime);
-        Projects newProject = {i,
-                               element.attribute("name", ""),
-                               element.attribute("duration", ""),
-                               projectTime,
-                               element.firstChildElement("createDate").text()};
-
-        projectAll.append(newProject);
-    }
-
-    return 0;
-}
-
 int DataBase::append(const QString &fileName, const QString &projectName, const Time &projectTime) {
     /**
      * Add data into userplans.xml/tempplans.xml
