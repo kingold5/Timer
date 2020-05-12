@@ -36,7 +36,7 @@ void MainWindow::on_PushButtonRunNow_clicked()
     Time projectTime = {ui->timeHour->value(),
                         ui->timeMin->value(),
                         ui->timeSec->value()};
-    data->append("tempplans.xml",
+    data->append(DataBase::k_tempFile,
                  ui->planName->text(),
                  projectTime);
 
@@ -52,7 +52,7 @@ void MainWindow::on_PushButtonAdd_clicked()
     Time projectTime = {ui->timeHour->value(),
                         ui->timeMin->value(),
                         ui->timeSec->value()};
-    int result = data->append("userplans.xml",
+    int result = data->append(DataBase::k_userFile,
                               ui->planName->text(),
                               projectTime);
     switch (result) {

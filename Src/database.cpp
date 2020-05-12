@@ -3,11 +3,9 @@
 #include <QMessageBox>
 #include "database.hpp"
 
-DataBase::DataBase() :
-    currentName(""),
-    currentDuration(""),
-    oldName(""),
-    oldDuration("")
+const QString DataBase::k_fileDir = "userdata";
+const QString DataBase::k_tempFile = k_fileDir + "/tempplans.xml";
+const QString DataBase::k_userFile = k_fileDir + "/userplans.xml";
 {
 
 }

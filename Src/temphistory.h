@@ -30,7 +30,6 @@ private slots:
 
 private:
     Ui::TempHistory *ui;
-    QString fileName = "tempplans.xml";
     QFile file;
     QDomDocument doc;
     ProjectsModel *tempModel;

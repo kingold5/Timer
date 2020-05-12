@@ -9,14 +9,7 @@ TempHistory::TempHistory(QWidget *parent) :
     ui(new Ui::TempHistory)
 {
     ui->setupUi(this);
-    file.setFileName(fileName);
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        qDebug() << fileName + "failed to open in model";
-    }
-    if (!doc.setContent(&file)) {
-        qDebug() << fileName + "failed to load in model";
-        file.close();
-    }
+    file.setFileName(DataBase::k_tempFile);
 
     tempModel = new ProjectsModel(doc, this);
     ui->tableView->setModel(tempModel);

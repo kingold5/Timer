@@ -18,6 +18,9 @@ public:
     bool dataExisted(QDomElement& root, const QString& projectName);
     static QString toTimeQString(const Time &timeDigital);
     static bool toTimeDigital(const QString &timeQString, Time &timeDigital);
+    static const QString k_fileDir;
+    static const QString k_tempFile;
+    static const QString k_userFile;
 
 private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
