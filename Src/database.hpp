@@ -17,6 +17,8 @@ public:
     bool dataExisted(QDomElement& root, const QString& projectName);
     static QString toTimeQString(const Time &timeDigital);
     static bool toTimeDigital(const QString &timeQString, Time &timeDigital);
+    static bool loadDocuments(QFile &file, QDomDocument &doc, QIODevice::OpenMode mode);
+
     static const QString k_fileDir;
     static const QString k_tempFile;
     static const QString k_userFile;

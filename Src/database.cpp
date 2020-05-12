@@ -10,9 +10,20 @@ const QString DataBase::k_userFile = k_fileDir + "/userplans.xml";
 
 }
 
-void DataBase::setProject(const QString &projectName, const QString &projectTime) {
-    currentName = projectName;
-    currentDuration = projectTime;
+bool DataBase::loadDocuments(QFile &file, QDomDocument &doc, QIODevice::OpenMode mode)
+{
+    if (!file.open(mode | QIODevice::Text)) {
+        qDebug() << "Open file failed";
+        return false;
+    }
+    if (mode == QIODevice::ReadOnly || mode == QIODevice::ReadWrite) {
+        if (!doc.setContent(&file)) {
+            qDebug() << "Load file failed";
+            file.close();
+            return false;
+        }
+    }
+    return true;
 }
 
 int DataBase::loadTemp(QString &projectName, Time &projectTime) {

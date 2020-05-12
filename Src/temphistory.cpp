@@ -10,10 +10,10 @@ TempHistory::TempHistory(QWidget *parent) :
 {
     ui->setupUi(this);
     file.setFileName(DataBase::k_tempFile);
+    DataBase::loadDocuments(file, doc, QIODevice::ReadWrite);
 
     tempModel = new ProjectsModel(doc, this);
     ui->tableView->setModel(tempModel);
-    // ui->tableView->setColumnWidth(2, 230);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
