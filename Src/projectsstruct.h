@@ -9,12 +9,4 @@ struct Time{
     double second;
 };
 
-struct Projects{
-    int id;
-    QString name;
-    QString durationQString;
-    Time durationDigital;
-    QString createDate;
-};
-
 #endif // PROJECTSTRUCT_H
