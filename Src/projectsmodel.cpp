@@ -1,9 +1,10 @@
-#include <QMessageBox>
 #include <QDebug>
+#include "database.hpp"
 #include "projectsmodel.h"
 
-ProjectsModel::ProjectsModel(QDomDocument &doc, QObject *parent)
-    : QAbstractTableModel(parent)
+ProjectsModel::ProjectsModel(QDomDocument &pdoc, QObject *parent)
+    : QAbstractTableModel(parent),
+      doc(pdoc)
 {
     nodes = doc.elementsByTagName("projects");
 }
@@ -105,12 +106,37 @@ Qt::ItemFlags ProjectsModel::flags(const QModelIndex &index) const
     return Qt::ItemIsEditable | QAbstractTableModel::flags(index);
 }
 
+bool ProjectsModel::insertRows(int row, int count, const QModelIndex &parent)
+{
+    beginInsertRows(parent, row, row+count-1);
+    doc.documentElement().appendChild(DataBase::nodeProject(doc));
+    endInsertRows();
+    return true;
+}
+
 bool ProjectsModel::removeRows(int row, int count, const QModelIndex &parent)
 {
+    /**
+     * count must be 1, only remove 1 row.
+     */
     beginRemoveRows(parent, row, row+count-1);
     QDomNode node = nodes.at(row);
     node.parentNode().removeChild(node);
     endRemoveRows();
+
+    return true;
+}
+
+bool ProjectsModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild)
+{
+    /**
+     * count must be 1, only move 1 row.
+     */
+    beginMoveRows(sourceParent, sourceRow, sourceRow+count-1, destinationParent, destinationChild+count-1);
+    QDomNode sourceNode = nodes.at(sourceRow);
+    QDomNode destinationNode = nodes.at(destinationChild);
+    destinationNode.parentNode().insertAfter(sourceNode, destinationNode);
+    endMoveRows();
 
     return true;
 }

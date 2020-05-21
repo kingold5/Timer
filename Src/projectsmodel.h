@@ -10,7 +10,7 @@ class ProjectsModel : public QAbstractTableModel
     Q_OBJECT
 
 public:
-    explicit ProjectsModel(QDomDocument &doc, QObject *parent = nullptr);
+    explicit ProjectsModel(QDomDocument &pdoc, QObject *parent = nullptr);
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -26,9 +26,11 @@ public:
                  int role=Qt::EditRole) override;
     Qt::ItemFlags flags(const QModelIndex &index) const override;
 
-    // bool insertRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
+    bool insertRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
     bool removeRows(int row, int count, const QModelIndex &parent=QModelIndex()) override;
+    bool moveRows(const QModelIndex &sourceParent, int sourceRow, int count, const QModelIndex &destinationParent, int destinationChild) override;
 private:
+    QDomDocument doc;
     QDomNodeList nodes;
 };
 
