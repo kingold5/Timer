@@ -1,18 +1,16 @@
+#include <QMessageBox>
 #include <QTableView>
 #include "temphistory.h"
-#include "projectsmodel.h"
 #include "ui_temphistory.h"
-#include "database.hpp"
 
-TempHistory::TempHistory(QWidget *parent) :
+TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     QWidget(parent),
-    ui(new Ui::TempHistory)
+    ui(new Ui::TempHistory),
+    data(pdata),
+    docRef(pdata->getDocHistory()),
+    tempModel(new ProjectsModel(docRef, this))
 {
     ui->setupUi(this);
-    file.setFileName(DataBase::k_tempFile);
-    DataBase::loadDocuments(file, doc, QIODevice::ReadWrite);
-
-    tempModel = new ProjectsModel(doc, this);
     ui->tableView->setModel(tempModel);
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->hide();
@@ -22,13 +20,6 @@ TempHistory::TempHistory(QWidget *parent) :
 
 TempHistory::~TempHistory()
 {
-    if (file.isOpen()) {
-        QTextStream ts(&file);
-        file.resize(0);
-        ts<<doc.toString();
-        file.close();
-    }
-
     delete tempModel;
     delete ui;
 }
@@ -39,25 +30,28 @@ void TempHistory::on_pushButtonRun_clicked()
     if (index.isValid()) {
         QString projectName = ui->tableView->model()->index(index.row(), 0).data().toString();
         QString projectTime = ui->tableView->model()->index(index.row(), 1).data().toString();
-
+        if (index.row() != ui->tableView->model()->rowCount()-1) {
+            ui->tableView->model()->moveRows(QModelIndex(), index.row(), 1, QModelIndex(), ui->tableView->model()->rowCount());
+        }
         showtimer = new ShowTimer(projectTime, projectName, this);
         showtimer->setAttribute(Qt::WA_DeleteOnClose);
         showtimer ->show();
     }
 }
 
-void TempHistory::on_pushButtonEdit_clicked()
+void TempHistory::on_pushButtonSave_clicked()
 {
-    QTextStream ts(&file);
-    file.resize(0);
-    ts<<doc.toString();
-    file.close();
+    if (!data->updateDataBase(DataBase::k_tempFile)) {
+        QMessageBox::warning(this, "Warning", "Failed to save data!");
+    }
     this->close();
 }
 
 void TempHistory::on_pushButtonCancel_clicked()
 {
-    file.close();
+    if (!data->resetDataBase(DataBase::k_tempFile)) {
+        QMessageBox::warning(this, "Warning", "Failed to load data!");
+    }
     this->close();
 }
 

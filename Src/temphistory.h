@@ -6,6 +6,7 @@
 #include <QDomDocument>
 #include "projectsmodel.h"
 #include "showtimer.h"
+#include "database.hpp"
 
 namespace Ui {
 class TempHistory;
@@ -16,22 +17,20 @@ class TempHistory : public QWidget
     Q_OBJECT
 
 public:
-    explicit TempHistory(QWidget *parent = nullptr);
+    explicit TempHistory(DataBase *pdata, QWidget *parent = nullptr);
     ~TempHistory();
 
 private slots:
     void on_pushButtonRun_clicked();
-
-    void on_pushButtonEdit_clicked();
-
+    void on_pushButtonSave_clicked();
     void on_pushButtonCancel_clicked();
-
     void on_pushButtonDelete_clicked();
+    // void updateHistory(const QString &projectName, const QString &timeLeft);
 
 private:
     Ui::TempHistory *ui;
-    QFile file;
-    QDomDocument doc;
+    DataBase *data;
+    QDomDocument docRef;
     ProjectsModel *tempModel;
     ShowTimer *showtimer;
 };
