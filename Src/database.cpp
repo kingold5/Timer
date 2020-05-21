@@ -21,11 +21,12 @@ bool DataBase::initDBFiles()
 
 bool DataBase::initHistoryFiles()
 {
-    QDomDocument doc;
-    QFile file(k_tempFile);
-    if (!file.exists() || file.size() == 0) {
-        if (!loadDocuments(file, doc, QIODevice::WriteOnly)) {
-            // Open file failed
+    if (!QFile::exists(k_tempFile) || QFile(k_tempFile).size() == 0) {
+        QDomDocument doc;
+        QFile file(k_tempFile);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "Create file failed";
+            file.close();
             return false;
         }
         QDomElement newRoot = doc.createElement("tempPlans");
@@ -39,11 +40,12 @@ bool DataBase::initHistoryFiles()
 
 bool DataBase::initUserFiles()
 {
-    QDomDocument doc;
-    QFile file(k_userFile);
-    if (!file.exists() || file.size() == 0) {
-        if (!loadDocuments(file, doc, QIODevice::WriteOnly)) {
-            // Open file failed
+    if (!QFile::exists(k_userFile) || QFile(k_userFile).size() == 0) {
+        QDomDocument doc;
+        QFile file(k_userFile);
+        if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+            qDebug() << "Create file failed";
+            file.close();
             return false;
         }
         QDomElement newRoot = doc.createElement("userPlans");
