@@ -1,8 +1,8 @@
 #include <QString>
+#include <QDebug>
 #include <QLCDNumber>
 #include "showtimer.h"
 #include "ui_showtimer.h"
-#include "database.hpp"
 
 
 ShowTimer::ShowTimer(const Time &timeDigital, const QString &name, QWidget *parent) :
@@ -95,10 +95,7 @@ void ShowTimer::on_pushButtonPause_clicked()
 
 void ShowTimer::on_pushButtonSaveExit_clicked()
 {
-    DataBase projectToStore;
-    projectToStore.append("tempplans.xml", ui->labelProName->text(),
-                          textTime);
-    emit projectChanged();
+    emit projectNeedsUpdate(ui->labelProName->text(), textTime);
     reject();
 }
 

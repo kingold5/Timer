@@ -24,7 +24,7 @@ protected:
     void constructor(const QString &name);
 
 signals:
-    void projectChanged();
+    void projectNeedsUpdate(const QString &projectName, const QString &timeLeft);
 
 private slots:
     void reject();

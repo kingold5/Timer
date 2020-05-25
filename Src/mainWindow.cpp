@@ -1,4 +1,5 @@
 #include <QMessageBox>
+#include <QDebug>
 #include "mainWindow.h"
 #include "ui_mainWindow.h"
 
@@ -34,6 +35,12 @@ void MainWindow::setupProject()
     ui->timeSec->setValue(projectTime.second);
 }
 
+void MainWindow::updateHistory(const QString &projectName, const QString &timeLeft)
+{
+    data->updateCurrent(DataBase::k_tempFile, projectName, timeLeft);
+    setupProject();
+}
+
 void MainWindow::on_PushButtonRunNow_clicked()
 {
     Time projectTime = {ui->timeHour->value(),
@@ -44,8 +51,8 @@ void MainWindow::on_PushButtonRunNow_clicked()
                  projectTime);
 
     showtimer = new ShowTimer(projectTime, ui->planName->text(), this);
-    connect(showtimer, SIGNAL(projectChanged()),
-            this, SLOT(setupProject()));
+    connect(showtimer, SIGNAL(projectNeedsUpdate(const QString &, const QString &)),
+            this, SLOT(updateHistory(const QString &, const QString &)));
     showtimer->setAttribute(Qt::WA_DeleteOnClose);
     showtimer ->show();
 }
@@ -79,7 +86,7 @@ void MainWindow::on_PushButtonAdd_clicked()
 
 void MainWindow::on_actionHistory_triggered()
 {
-    history = new TempHistory(this);
+    history = new TempHistory(data, this);
     history->setAttribute(Qt::WA_DeleteOnClose);
     history->show();
 }

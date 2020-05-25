@@ -25,6 +25,7 @@ private slots:
     void on_PushButtonAdd_clicked();
     void on_actionHistory_triggered();
 
+    void updateHistory(const QString &projectName, const QString &timeLeft);
     void setupProject();
 
 private:
