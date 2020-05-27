@@ -16,24 +16,27 @@ bool DataBase::initDBFiles()
     if (!QDir(k_fileDir).exists() && !QDir().mkdir(k_fileDir)) {
         return false;
     }
-    return initHistoryFiles() | initUserFiles();
+    bool initHistory = initHistoryFiles();
+    bool initUser = initUserFiles();
+    return initHistory | initUser;
 }
 
 bool DataBase::initHistoryFiles()
 {
     if (!QFile::exists(k_tempFile) || QFile(k_tempFile).size() == 0) {
-        QDomDocument doc;
         QFile file(k_tempFile);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             qDebug() << "Create file failed";
             file.close();
             return false;
         }
-        QDomElement newRoot = doc.createElement("tempPlans");
-        doc.appendChild(newRoot);
+        QDomElement newRoot = docHistory.createElement("tempPlans");
+        docHistory.appendChild(newRoot);
         QTextStream ts(&file);
-        ts<<doc.toString();
+        ts<<docHistory.toString();
         file.close();
+    } else {
+        loadDocuments(k_tempFile, docHistory);
     }
     return true;
 }
@@ -41,18 +44,19 @@ bool DataBase::initHistoryFiles()
 bool DataBase::initUserFiles()
 {
     if (!QFile::exists(k_userFile) || QFile(k_userFile).size() == 0) {
-        QDomDocument doc;
         QFile file(k_userFile);
         if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
             qDebug() << "Create file failed";
             file.close();
             return false;
         }
-        QDomElement newRoot = doc.createElement("userPlans");
-        doc.appendChild(newRoot);
+        QDomElement newRoot = docUser.createElement("userPlans");
+        docUser.appendChild(newRoot);
         QTextStream ts(&file);
-        ts<<doc.toString();
+        ts<<docUser.toString();
         file.close();
+    } else {
+        loadDocuments(k_userFile, docUser);
     }
     return true;
 }
