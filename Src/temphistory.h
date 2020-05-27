@@ -27,8 +27,10 @@ public slots:
     void on_pushButtonDelete_clicked();
     void update(const QString &projectName, const QString &timeLeft);
 
-private:
+protected:
     Ui::TempHistory *ui;
+
+private:
     DataBase *data;
     QDomDocument docRef;
     ProjectsModel *tempModel;
