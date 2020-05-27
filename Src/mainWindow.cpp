@@ -38,6 +38,7 @@ void MainWindow::setupProject()
 void MainWindow::updateHistory(const QString &projectName, const QString &timeLeft)
 {
     data->updateCurrent(DataBase::k_tempFile, projectName, timeLeft);
+    data->updateDataBase(DataBase::k_tempFile);
     setupProject();
 }
 
