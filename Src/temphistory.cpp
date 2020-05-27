@@ -4,7 +4,7 @@
 #include "ui_temphistory.h"
 
 TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
-    QWidget(parent),
+    QDialog(parent),
     ui(new Ui::TempHistory),
     data(pdata),
     docRef(pdata->getDocHistory()),

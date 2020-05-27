@@ -1,7 +1,7 @@
 #ifndef TEMPHISTORY_H
 #define TEMPHISTORY_H
 
-#include <QWidget>
+#include <QDialog>
 #include <QTableView>
 #include <QDomDocument>
 #include "projectsmodel.h"
@@ -12,7 +12,7 @@ namespace Ui {
 class TempHistory;
 }
 
-class TempHistory : public QWidget
+class TempHistory : public QDialog
 {
     Q_OBJECT
 
