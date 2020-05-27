@@ -92,6 +92,25 @@ bool DataBase::saveDocuments(const QString &fileName, const QDomDocument &doc)
     return true;
 }
 
+QDomDocument DataBase::getDocHistory()
+{
+    return docHistory;
+}
+
+QDomDocument DataBase::getDocUser()
+{
+    return docUser;
+}
+
+bool DataBase::updateDataBase(const QString &fileName)
+{
+    if (fileName == k_tempFile && saveDocuments(k_tempFile, docHistory)) {
+        return true;
+    } else if (fileName == k_userFile && saveDocuments(k_userFile, docUser)) {
+        return true;
+    }
+    return false;
+}
 int DataBase::loadTemp(QString &projectName, Time &projectTime) {
     /**
      * Load the lastest plan from tempplans.xml
