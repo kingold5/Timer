@@ -27,5 +27,7 @@ private:
     QDomElement nodeProject(QDomDocument &doc, const QString &projectName, const QString &projectTime);
     bool initHistoryFiles();
     bool initUserFiles();
+    bool loadDocuments(const QString &fileName, QDomDocument &doc);
+    bool saveDocuments(const QString &fileName, const QDomDocument &doc);
 };
 #endif // DATABASE_H

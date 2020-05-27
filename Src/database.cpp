@@ -61,19 +61,34 @@ bool DataBase::initUserFiles()
     return true;
 }
 
-bool DataBase::loadDocuments(QFile &file, QDomDocument &doc, QIODevice::OpenMode mode)
+bool DataBase::loadDocuments(const QString &fileName, QDomDocument &doc)
 {
-    if (!file.open(mode | QIODevice::Text)) {
+    QFile file(fileName);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
         qDebug() << "Open file failed";
         return false;
     }
-    if (mode == QIODevice::ReadOnly || mode == QIODevice::ReadWrite) {
-        if (!doc.setContent(&file)) {
-            qDebug() << "Load file failed";
-            file.close();
-            return false;
-        }
+    if (!doc.setContent(&file)) {
+        qDebug() << "Load file failed";
+        file.close();
+        return false;
     }
+    file.close();
+    return true;
+}
+
+bool DataBase::saveDocuments(const QString &fileName, const QDomDocument &doc)
+{
+    QFile file(fileName);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        qDebug() << "Open file failed";
+        return false;
+    }
+
+    QTextStream ts(&file);
+    file.resize(0);
+    ts<<doc.toString();
+    file.close();
     return true;
 }
 
