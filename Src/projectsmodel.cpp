@@ -140,9 +140,9 @@ bool ProjectsModel::moveRows(const QModelIndex &sourceParent, int sourceRow, int
     /**
      * count must be 1, only move 1 row.
      */
-    beginMoveRows(sourceParent, sourceRow, sourceRow+count-1, destinationParent, destinationChild+count-1);
+    beginMoveRows(sourceParent, sourceRow, sourceRow+count-1, destinationParent, destinationChild);
     QDomNode sourceNode = nodes.at(sourceRow);
-    QDomNode destinationNode = nodes.at(destinationChild);
+    QDomNode destinationNode = nodes.at(destinationChild-1);
     destinationNode.parentNode().insertAfter(sourceNode, destinationNode);
     endMoveRows();
 
