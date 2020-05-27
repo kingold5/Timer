@@ -18,6 +18,8 @@ QVariant ProjectsModel::headerData(int section, Qt::Orientation orientation, int
         case 1:
             return tr("Duration");
         case 2:
+            return tr("Time Left");
+        case 3:
             return tr("Create Date");
         default:
             break;
@@ -40,7 +42,7 @@ int ProjectsModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     } else {
-        return 3;
+        return 4;
     }
 }
 
@@ -58,12 +60,14 @@ QVariant ProjectsModel::data(const QModelIndex &index, int role) const
         case 1:
             return element.attribute("duration", "");
         case 2:
+            return element.attribute("timeLeft", "");
+        case 3:
             return element.firstChildElement("createDate").text();
         default:
             break;
         }
     } else if (role == Qt::TextAlignmentRole) {
-        if (index.column()==0 || index.column()==1) {
+        if (index.column()==0 || index.column()==1 || index.column()==2) {
             return Qt::AlignHCenter + Qt::AlignVCenter;
         }
     }
@@ -87,6 +91,10 @@ bool ProjectsModel::setData(const QModelIndex &index, const QVariant &value, int
             }
             case 1: {
                 element.setAttribute("duration", value.toString());
+                return true;
+            }
+            case 2: {
+                element.setAttribute("timeLeft", value.toString());
                 return true;
             }
             default:
