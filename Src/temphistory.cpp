@@ -8,7 +8,8 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     ui(new Ui::TempHistory),
     data(pdata),
     docRef(pdata->getDocHistory()),
-    tempModel(new ProjectsModel(docRef, this))
+    tempModel(new ProjectsModel(docRef, this)),
+    fileName(DataBase::k_tempFile)
 {
     ui->setupUi(this);
     ui->tableView->setModel(tempModel);
@@ -41,7 +42,7 @@ void TempHistory::on_pushButtonRun_clicked()
 
 void TempHistory::on_pushButtonSave_clicked()
 {
-    if (!data->updateDataBase(DataBase::k_tempFile)) {
+    if (!data->updateDataBase(fileName)) {
         QMessageBox::warning(this, "Warning", "Failed to save data!");
     }
     this->close();
@@ -49,7 +50,7 @@ void TempHistory::on_pushButtonSave_clicked()
 
 void TempHistory::on_pushButtonCancel_clicked()
 {
-    if (!data->resetDataBase(DataBase::k_tempFile)) {
+    if (!data->resetDataBase(fileName)) {
         QMessageBox::warning(this, "Warning", "Failed to load data!");
     }
     this->close();

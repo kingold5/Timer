@@ -32,6 +32,7 @@ private:
     DataBase *data;
     QDomDocument docRef;
     ProjectsModel *tempModel;
+    QString fileName;
     ShowTimer *showtimer;
 };
 
