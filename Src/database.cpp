@@ -286,7 +286,26 @@ bool DataBase::updateCurrent(const QString &fileName, const QString &projectName
             n = n.nextSibling();
         }
     }
-    return false;
+
+int DataBase::completePercent(const QString &timeTotal, const QString &timeLeft)
+{
+    /**
+     * @brief timeTotalInSec calculates how much percentage completed
+     * @return percentage * 100 in type int
+     */
+    int timeTotalInSec = inSeconds(timeTotal);
+    int timeLeftInSec = inSeconds(timeLeft);
+    int percent = (timeTotalInSec - timeLeftInSec) * 100 / timeTotalInSec;
+
+    return percent;
+}
+
+int DataBase::inSeconds(const QString &timeQString)
+{
+    Time timeDig;
+    toTimeDigital(timeQString, timeDig);
+    int seconds = timeDig.hour * 3600 + timeDig.minute * 60 + timeDig.second;
+    return seconds;
 }
 
 bool DataBase::moveToLast(const QString &fileName, const int ID)

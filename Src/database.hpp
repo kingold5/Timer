@@ -36,6 +36,8 @@ private:
     bool loadDocuments(const QString &fileName, QDomDocument &doc);
     bool saveDocuments(const QString &fileName, const QDomDocument &doc);
     QString timeElapsed(QString begin, QString end);
+    int completePercent(const QString &timeTotal, const QString &timeLeft);
+    int inSeconds(const QString &timeQString);
 
     QDomDocument docHistory;
     QDomDocument docUser;
