@@ -15,7 +15,7 @@ public:
     int append(const QString &fileName, const QString &projectName, const Time &projectTime);
     int append(const QString &fileName, const QString &projectName, const QString &projectTime);
     bool dataExisted(QDomElement& root, const QString& projectName);
-    bool updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft);
+    void updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft);
     QDomDocument getDocHistory();
     QDomDocument getDocUser();
     bool updateDataBase(const QString &fileName);

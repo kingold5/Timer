@@ -251,6 +251,7 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     newProject.setAttribute("name", projectName);
     newProject.setAttribute("duration", projectTime);
     newProject.setAttribute("timeLeft", projectTime);
+    newProject.setAttribute("percent*100", "0");
 
     QDateTime createDate;
     QString QCreateDate = createDate.currentDateTimeUtc().toString();
@@ -262,7 +263,7 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     return newProject;
 }
 
-bool DataBase::updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft)
+void DataBase::updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft)
 {
     if (fileName == k_tempFile) {
         // Update the last project in tempplans.xml
@@ -270,7 +271,10 @@ bool DataBase::updateCurrent(const QString &fileName, const QString &projectName
         QDomElement e = n.toElement();
         if (!e.isNull() && e.attribute("name", "") == projectName) {
             e.setAttribute("timeLeft", timeLeft);
-            return saveDocuments(k_tempFile, docHistory);
+            int percentage = completePercent(e.attribute("duration", "00:00:01"), timeLeft);
+            if (percentage <= 100 && percentage >=0) {
+                e.setAttribute("percent*100", QString::number(percentage));
+            }
         }
     } else if (fileName == k_userFile){
         // Update the correspond project in userplans.xml
@@ -280,12 +284,13 @@ bool DataBase::updateCurrent(const QString &fileName, const QString &projectName
             if (!e.isNull()) {
                 if (e.attribute("name", "") == projectName) {
                     e.setAttribute("timeLeft", timeLeft);
-                    return saveDocuments(k_userFile, docUser);
+                    break;
                 }
             }
             n = n.nextSibling();
         }
     }
+}
 
 int DataBase::completePercent(const QString &timeTotal, const QString &timeLeft)
 {
