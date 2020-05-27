@@ -111,6 +111,17 @@ bool DataBase::updateDataBase(const QString &fileName)
     }
     return false;
 }
+
+bool DataBase::resetDataBase(const QString &fileName)
+{
+    if (fileName == k_tempFile && loadDocuments(k_tempFile, docHistory)) {
+        return true;
+    } else if (fileName == k_userFile && loadDocuments(k_userFile, docUser)) {
+        return true;
+    }
+    return false;
+}
+
 int DataBase::loadTemp(QString &projectName, Time &projectTime) {
     /**
      * Load the lastest plan from tempplans.xml
@@ -121,25 +132,11 @@ int DataBase::loadTemp(QString &projectName, Time &projectTime) {
      * 		   1:	no data found in database
      */
 
-    QDomDocument doc("tempPlans");
-    QFile file("tempplans.xml");
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qDebug() << "Open file failed";
-        return -1;
-    }
-    if (!doc.setContent(&file)) {
-        qDebug() << "Load file failed";
-        file.close();
-        return -1;
-    }
-
-    // Find the root element
-    QDomElement docElem = doc.documentElement();
     // Find last child node of root element
-    QDomNode n = docElem.lastChild();
+    QDomNode n = docHistory.documentElement().lastChild();
     QDomElement e = n.toElement();
     if (!e.isNull()) {
-        if (toTimeDigital(e.attribute("duration", ""), projectTime)) {
+        if (toTimeDigital(e.attribute("timeLeft", ""), projectTime)) {
             projectName = e.attribute("name", "");
             return 0;
         }
@@ -178,51 +175,27 @@ int DataBase::append(const QString &fileName, const QString &projectName, const 
      * 		   -1:	file load/open problem
      * 		   1:	data existed, no write needed
      */
-    QString rootTag;
-    if (fileName == "userplans.xml") {
-        rootTag = "userPlans";
-    } else if (fileName == "tempplans.xml") {
-        rootTag = "tempPlans";
-    } else {
-        qDebug() << "Wrong filename";
-        return -1;
-    }
 
-    QDomDocument doc;
-    QFile file(fileName);
-    if (!file.open(QIODevice::ReadWrite | QIODevice::Text)) {
-        qDebug("Open file failed");
-        return -1;
-    }
-    if (file.size() == 0) {
-        qDebug() << "file is null";
-        QDomElement newRoot = doc.createElement(rootTag);
-        doc.appendChild(newRoot);
-    }
-    else if (!doc.setContent(&file)) {
-        file.close();
-        qDebug() << "Load content failed";
-        return -1;
-    }
-
-    // Find the root element
-    QDomElement root = doc.documentElement();
-    QDomNode n = root.lastChild();
-    QDomElement e = n.toElement();
-    if (!e.isNull()) {
-        if (e.attribute("name", "") == projectName && e.attribute("duration", "") == projectTime) {
-            // Same project, no need to write
+    if (fileName == k_tempFile) {
+        // Simply append the new project
+        QDomElement root = docHistory.documentElement();
+        root.appendChild(nodeProject(docHistory, projectName, projectTime));
+        if (!saveDocuments(k_tempFile, docHistory)) {
+            return -1;
+        }
+    } else if(fileName == k_userFile) {
+        // Append if there is no same projectName exists.
+        QDomElement root = docUser.documentElement();
+        if (dataExisted(root, projectName)) {
             return 1;
+        } else {
+            root.appendChild(nodeProject(docUser, projectName, projectTime));
+        }
+        if (!saveDocuments(k_userFile, docUser)) {
+            return -1;
         }
     }
-
-    root.appendChild(nodeProject(doc, projectName, projectTime));
-
-    QTextStream ts(&file);
-    file.resize(0);
-    ts<<doc.toString();
     return 0;
-
 }
 
 bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
@@ -277,6 +250,7 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     QDomElement newProject = doc.createElement("projects");
     newProject.setAttribute("name", projectName);
     newProject.setAttribute("duration", projectTime);
+    newProject.setAttribute("timeLeft", projectTime);
 
     QDateTime createDate;
     QString QCreateDate = createDate.currentDateTimeUtc().toString();
@@ -286,4 +260,67 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     date.appendChild(tCreateDate);
 
     return newProject;
+}
+
+bool DataBase::updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft)
+{
+    if (fileName == k_tempFile) {
+        // Update the last project in tempplans.xml
+        QDomNode n = docHistory.documentElement().lastChild();
+        QDomElement e = n.toElement();
+        if (!e.isNull() && e.attribute("name", "") == projectName) {
+            e.setAttribute("timeLeft", timeLeft);
+            return saveDocuments(k_tempFile, docHistory);
+        }
+    } else if (fileName == k_userFile){
+        // Update the correspond project in userplans.xml
+        QDomNode n = docUser.documentElement().firstChild();
+        while (!n.isNull()) {
+            QDomElement e = n.toElement();
+            if (!e.isNull()) {
+                if (e.attribute("name", "") == projectName) {
+                    e.setAttribute("timeLeft", timeLeft);
+                    return saveDocuments(k_userFile, docUser);
+                }
+            }
+            n = n.nextSibling();
+        }
+    }
+    return false;
+}
+
+bool DataBase::moveToLast(const QString &fileName, const int ID)
+{
+    if (fileName == k_tempFile) {
+        QDomNode node = docHistory.elementsByTagName("projects").at(ID);
+        QDomNode nodeLast = docHistory.lastChild();
+        nodeLast.parentNode().insertAfter(node, nodeLast);
+        return true;
+    } else if (fileName == k_userFile) {
+        QDomNode node = docHistory.elementsByTagName("projects").at(ID);
+        node.parentNode().removeChild(node);
+        node.parentNode().appendChild(node);
+        return true;
+    }
+    return false;
+}
+
+QString DataBase::timeElapsed(QString begin, QString end)
+{
+    Time beginDig, endDig, timeDig;
+    QString time;
+    toTimeDigital(begin, beginDig);
+    toTimeDigital(end, endDig);
+    int beginSec = beginDig.hour * 3600 + beginDig.minute * 60 + beginDig.second;
+    int endSec = endDig.hour * 3600 + endDig.minute * 60 + endDig.second;
+    if (endSec <= beginSec) {
+        time = "00:00:00";
+        return time;
+    }
+    int timeSec = endSec - beginSec;
+    timeDig.hour = timeSec / 3600;
+    timeDig.minute = (timeSec/60) % 60;
+    timeDig.second = timeSec % 60;
+    time = toTimeQString(timeDig);
+    return time;
 }
