@@ -20,12 +20,12 @@ public:
     explicit TempHistory(DataBase *pdata, QWidget *parent = nullptr);
     ~TempHistory();
 
-private slots:
+public slots:
     void on_pushButtonRun_clicked();
     void on_pushButtonSave_clicked();
     void on_pushButtonCancel_clicked();
     void on_pushButtonDelete_clicked();
-    // void updateHistory(const QString &projectName, const QString &timeLeft);
+    void update(const QString &projectName, const QString &timeLeft);
 
 private:
     Ui::TempHistory *ui;

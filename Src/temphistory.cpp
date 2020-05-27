@@ -25,6 +25,15 @@ TempHistory::~TempHistory()
     delete ui;
 }
 
+void TempHistory::update(const QString &projectName, const QString &timeLeft)
+{
+    // data->updateCurrent(fileName, projectName, timeLeft);
+    QDomElement e = docRef.documentElement().lastChild().toElement();
+    if (!e.isNull() && e.attribute("name", "") == projectName) {
+        e.setAttribute("timeLeft", timeLeft);
+    }
+}
+
 void TempHistory::on_pushButtonRun_clicked()
 {
     QModelIndex index = ui->tableView->currentIndex();
@@ -35,8 +44,10 @@ void TempHistory::on_pushButtonRun_clicked()
             ui->tableView->model()->moveRows(QModelIndex(), index.row(), 1, QModelIndex(), ui->tableView->model()->rowCount());
         }
         showtimer = new ShowTimer(projectTime, projectName, this);
+        connect(showtimer, SIGNAL(projectNeedsUpdate(const QString &, const QString &)),
+                this, SLOT(update(const QString &, const QString &)));
         showtimer->setAttribute(Qt::WA_DeleteOnClose);
-        showtimer ->show();
+        showtimer->show();
     }
 }
 
