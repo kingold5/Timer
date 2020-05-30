@@ -28,11 +28,7 @@ TempHistory::~TempHistory()
 
 void TempHistory::update(const QString &projectName, const QString &timeLeft)
 {
-    // data->updateCurrent(fileName, projectName, timeLeft);
-    QDomElement e = docRef.documentElement().lastChild().toElement();
-    if (!e.isNull() && e.attribute("name", "") == projectName) {
-        e.setAttribute("timeLeft", timeLeft);
-    }
+    data->saveDataBase(fileName);
 }
 
 void TempHistory::on_pushButtonRun_clicked()
@@ -54,7 +50,7 @@ void TempHistory::on_pushButtonRun_clicked()
 
 void TempHistory::on_pushButtonSave_clicked()
 {
-    if (!data->updateDataBase(fileName)) {
+    if (!data->saveDataBase(fileName)) {
         QMessageBox::warning(this, "Warning", "Failed to save data!");
     }
     this->close();

@@ -102,7 +102,7 @@ QDomDocument DataBase::getDocUser()
     return docUser;
 }
 
-bool DataBase::updateDataBase(const QString &fileName)
+bool DataBase::saveDataBase(const QString &fileName)
 {
     if (fileName == k_tempFile && saveDocuments(k_tempFile, docHistory)) {
         return true;

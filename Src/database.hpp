@@ -18,7 +18,7 @@ public:
     void updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft);
     QDomDocument getDocHistory();
     QDomDocument getDocUser();
-    bool updateDataBase(const QString &fileName);
+    bool saveDataBase(const QString &fileName);
     bool resetDataBase(const QString &fileName);
     bool updateDataBase();
     bool moveToLast(const QString &fileName, const int ID);
