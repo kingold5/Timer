@@ -1,5 +1,6 @@
 #include <QMessageBox>
 #include <QTableView>
+#include <QProgressBar>
 #include "temphistory.h"
 #include "ui_temphistory.h"
 
@@ -13,6 +14,7 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
 {
     ui->setupUi(this);
     ui->tableView->setModel(tempModel);
+    renderProgress();
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
@@ -20,14 +22,36 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     ui->tableView->resizeColumnToContents(0);
 }
 
+
 TempHistory::~TempHistory()
 {
     delete tempModel;
     delete ui;
 }
 
+void TempHistory::renderProgress()
+{
+    int rowCount = ui->tableView->model()->rowCount();
+    for (int i = 0; i < rowCount; ++i)
+    {
+        QModelIndex index = ui->tableView->model()->index(i, 3);
+        QProgressBar *progress = new QProgressBar;
+        progress->setMinimum(0);
+        progress->setMaximum(100);
+        progress->setValue(ui->tableView->model()->index(i, 3).data().toInt());
+        progress->setAutoFillBackground(true);
+        ui->tableView->setIndexWidget(index, progress);
+    }
+}
+
 void TempHistory::update(const QString &projectName, const QString &timeLeft)
 {
+    /***
+     * Update timeLeft, percent100, progress bar and save XML file
+     */
+
+    data->updateCurrent(fileName, projectName, timeLeft);
+    renderProgress();
     data->saveDataBase(fileName);
 }
 

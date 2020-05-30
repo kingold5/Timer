@@ -20,6 +20,8 @@ QVariant ProjectsModel::headerData(int section, Qt::Orientation orientation, int
         case 2:
             return tr("Time Left");
         case 3:
+            return tr("Complete");
+        case 4:
             return tr("Create Date");
         default:
             break;
@@ -42,7 +44,7 @@ int ProjectsModel::columnCount(const QModelIndex &parent) const
     if (parent.isValid()) {
         return 0;
     } else {
-        return 4;
+        return 5;
     }
 }
 
@@ -62,6 +64,8 @@ QVariant ProjectsModel::data(const QModelIndex &index, int role) const
         case 2:
             return element.attribute("timeLeft", "");
         case 3:
+            return element.attribute("percent100", "");
+        case 4:
             return element.firstChildElement("createDate").text();
         default:
             break;

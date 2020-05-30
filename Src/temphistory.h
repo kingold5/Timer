@@ -26,6 +26,7 @@ public slots:
     void on_pushButtonCancel_clicked();
     void on_pushButtonDelete_clicked();
     void update(const QString &projectName, const QString &timeLeft);
+    void renderProgress();
 
 protected:
     Ui::TempHistory *ui;
