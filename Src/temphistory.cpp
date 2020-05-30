@@ -13,6 +13,7 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     fileName(DataBase::k_tempFile)
 {
     ui->setupUi(this);
+    setWindowTitle("History");
     ui->tableView->setModel(tempModel);
     renderProgress();
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
