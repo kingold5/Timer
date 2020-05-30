@@ -303,7 +303,7 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     newProject.setAttribute("name", projectName);
     newProject.setAttribute("duration", projectTime);
     newProject.setAttribute("timeLeft", projectTime);
-    newProject.setAttribute("percent*100", "0");
+    newProject.setAttribute("percent100", "0");
 
     QDateTime createDate;
     QString QCreateDate = createDate.currentDateTimeUtc().toString();
@@ -325,7 +325,7 @@ void DataBase::updateCurrent(const QString &fileName, const QString &projectName
             e.setAttribute("timeLeft", timeLeft);
             int percentage = completePercent(e.attribute("duration", "00:00:01"), timeLeft);
             if (percentage <= 100 && percentage >=0) {
-                e.setAttribute("percent*100", QString::number(percentage));
+                e.setAttribute("percent100", QString::number(percentage));
             }
         }
     } else if (fileName == k_userFile){
