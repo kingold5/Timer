@@ -6,6 +6,7 @@
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
+    showtimer(nullptr),
     data(new DataBase)
 {
     ui->setupUi(this);
@@ -13,6 +14,9 @@ MainWindow::MainWindow(QWidget *parent) :
     // Initialize directory and files
     if (!data->initDBFiles()) {
         QMessageBox::warning(this, "Warning", "Failed to create database!");
+    }
+    if (!data->updateDataBase()) {
+        QMessageBox::warning(this, "Warning", "Failed to update database!");
     }
     setupProject();
 }
