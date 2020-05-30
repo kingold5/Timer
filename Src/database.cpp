@@ -122,6 +122,58 @@ bool DataBase::resetDataBase(const QString &fileName)
     return false;
 }
 
+bool DataBase::updateDataBase()
+{
+    /***
+     * Used to add new features in XML database
+     * add percent100
+     */
+
+    QFile file("userdata/version_0.2");
+    if (file.exists()) {
+        return true;
+    }
+    QDomNode n = docHistory.documentElement().firstChild();
+    while (!n.isNull()) {
+        QDomElement e = n.toElement();
+        if (!e.isNull()) {
+            QString timeTotal = e.attribute("duration", "00:00:01");
+            QString timeLeft = e.attribute("timeLeft", "00:00:01");
+            int percent = completePercent(timeTotal, timeLeft);
+            if (percent <= 100 && percent >= 0) {
+                e.setAttribute("percent100", QString::number(percent));
+            } else {
+                e.setAttribute("percent100", "0");
+            }
+        }
+        n = n.nextSibling();
+    }
+
+    n = docUser.documentElement().firstChild();
+    while (!n.isNull()) {
+        QDomElement e = n.toElement();
+        if (!e.isNull()) {
+            QString timeTotal = e.attribute("duration", "00:00:01");
+            QString timeLeft = e.attribute("timeLeft", "00:00:01");
+            int percent = completePercent(timeTotal, timeLeft);
+            if (percent <= 100 && percent >= 0) {
+                e.setAttribute("percent100", QString::number(percent));
+            } else {
+                e.setAttribute("percent100", "0");
+            }
+        }
+        n = n.nextSibling();
+    }
+    if (saveDocuments(k_tempFile, docHistory) && saveDocuments(k_userFile, docUser)) {
+        if(file.open(QIODevice::WriteOnly)) {
+            file.close();
+            return true;
+        }
+        file.close();
+    }
+    return false;
+}
+
 int DataBase::loadTemp(QString &projectName, Time &projectTime) {
     /**
      * Load the lastest plan from tempplans.xml

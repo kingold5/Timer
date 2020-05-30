@@ -20,6 +20,7 @@ public:
     QDomDocument getDocUser();
     bool updateDataBase(const QString &fileName);
     bool resetDataBase(const QString &fileName);
+    bool updateDataBase();
     bool moveToLast(const QString &fileName, const int ID);
 
     static QString toTimeQString(const Time &timeDigital);
