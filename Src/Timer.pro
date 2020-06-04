@@ -14,6 +14,7 @@ SOURCES += \
     main.cpp \
     mainWindow.cpp \
     Countdown.cpp \
+    myspinbox.cpp \
     projectsmodel.cpp \
     showtimer.cpp \
     database.cpp \
@@ -25,6 +26,7 @@ HEADERS += \
     Countdown.hpp \
     addplan.h \
     mainWindow.h \
+    myspinbox.h \
     projectsmodel.h \
     projectsstruct.h \
     showtimer.h \
