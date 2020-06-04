@@ -4,9 +4,9 @@
 #include <QString>
 
 struct Time{
-    double hour;
-    double minute;
-    double second;
+    int hour;
+    int minute;
+    int second;
 };
 
 #endif // PROJECTSTRUCT_H

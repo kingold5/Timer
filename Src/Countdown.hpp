@@ -6,7 +6,7 @@
 
 class CountDown {
     public:
-        CountDown(double h=0.0, double m=0.0, double s=0.0);
+        CountDown(int h=0, int m=0, int s=0);
         CountDown(const Time &time);
         CountDown(const QString &time);
 

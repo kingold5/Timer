@@ -72,13 +72,7 @@
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_2">
               <item>
-               <widget class="QDoubleSpinBox" name="timeHour">
-                <property name="decimals">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <double>99.000000000000000</double>
-                </property>
+               <widget class="MySpinBox" name="timeHour">
                </widget>
               </item>
               <item>
@@ -89,13 +83,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="timeMin">
-                <property name="decimals">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <double>59.000000000000000</double>
-                </property>
+               <widget class="MySpinBox" name="timeMin">
                </widget>
               </item>
               <item>
@@ -106,13 +94,7 @@
                </widget>
               </item>
               <item>
-               <widget class="QDoubleSpinBox" name="timeSec">
-                <property name="decimals">
-                 <number>0</number>
-                </property>
-                <property name="maximum">
-                 <double>59.000000000000000</double>
-                </property>
+               <widget class="MySpinBox" name="timeSec">
                </widget>
               </item>
               <item>

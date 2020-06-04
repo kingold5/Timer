@@ -1,18 +1,18 @@
 #include "Countdown.hpp"
 #include "database.hpp"
 
-CountDown::CountDown(double h, double m, double s) :
-    hour(static_cast<int>(h)),
-    minute(static_cast<int>(m)),
-    second(static_cast<int>(s))
+CountDown::CountDown(int h, int m, int s) :
+    hour(h),
+    minute(m),
+    second(s)
 {
     toSec();
 }
 
 CountDown::CountDown(const Time &time) :
-    hour(static_cast<int>(time.hour)),
-    minute(static_cast<int>(time.minute)),
-    second(static_cast<int>(time.second))
+    hour(time.hour),
+    minute(time.minute),
+    second(time.second)
 {
     toSec();
 }
@@ -21,16 +21,16 @@ CountDown::CountDown(const QString &time)
 {
     Time timedigital;
     DataBase::toTimeDigital(time, timedigital);
-    hour = (static_cast<int>(timedigital.hour));
-    minute = (static_cast<int>(timedigital.minute));
-    second = (static_cast<int>(timedigital.second));
+    hour = timedigital.hour;
+    minute = timedigital.minute;
+    second = timedigital.second;
     toSec();
 }
 
 void CountDown::setTimer(const Time &time) {
-    hour = static_cast<int>(time.hour);
-    minute = static_cast<int>(time.minute);
-    second = static_cast<int>(time.second);
+    hour = time.hour;
+    minute = time.minute;
+    second = time.second;
     toSec();
 }
 
@@ -41,9 +41,9 @@ void CountDown::getTimer(int *h, int *m, int *s) const {
 }
 
 void CountDown::getTimer(Time &time) const {
-    time.hour = static_cast<double>(hour);
-    time.minute = static_cast<double>(minute);
-    time.second = static_cast<double>(second);
+    time.hour = hour;
+    time.minute = minute;
+    time.second = second;
 }
 
 QString CountDown::timeQString() const {

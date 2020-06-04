@@ -266,9 +266,9 @@ bool DataBase::dataExisted(QDomElement& root, const QString &projectName)
 
 QString DataBase::toTimeQString(const Time &timeDigital) {
     QString textTime = QString("%1:%2:%3")
-            .arg(static_cast<int>(timeDigital.hour), 2, 10, QChar('0'))
-            .arg(static_cast<int>(timeDigital.minute), 2, 10, QChar('0'))
-            .arg(static_cast<int>(timeDigital.second), 2, 10, QChar('0'));
+            .arg(timeDigital.hour, 2, 10, QChar('0'))
+            .arg(timeDigital.minute, 2, 10, QChar('0'))
+            .arg(timeDigital.second, 2, 10, QChar('0'));
     return textTime;
 }
 
@@ -356,7 +356,7 @@ int DataBase::inSeconds(const QString &timeQString)
 {
     Time timeDig;
     toTimeDigital(timeQString, timeDig);
-    int seconds = static_cast<int>(timeDig.hour * 3600 + timeDig.minute * 60 + timeDig.second);
+    int seconds = timeDig.hour * 3600 + timeDig.minute * 60 + timeDig.second;
     return seconds;
 }
 

@@ -1,6 +1,7 @@
 #include <QMessageBox>
 #include <QDebug>
 #include "mainWindow.h"
+#include "myspinbox.h"
 #include "ui_mainWindow.h"
 
 MainWindow::MainWindow(QWidget *parent) :
@@ -31,7 +32,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::setupProject()
 {
-    Time projectTime = {0.0, 0.0, 0.0};
+    Time projectTime = {0, 0, 0};
     QString projectName="";
 
     data->loadTemp(projectName, projectTime);
@@ -39,6 +40,11 @@ void MainWindow::setupProject()
     ui->timeHour->setValue(projectTime.hour);
     ui->timeMin->setValue(projectTime.minute);
     ui->timeSec->setValue(projectTime.second);
+    ui->timeHour->setRange(0, 99);
+    ui->timeMin->setRange(0, 59);
+    ui->timeSec->setRange(0, 59);
+    ui->timeMin->setWrapping(true);
+    ui->timeSec->setWrapping(true);
 }
 
 void MainWindow::updateHistory(const QString &projectName, const QString &timeLeft)
