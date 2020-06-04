@@ -2,4 +2,9 @@
     <qresource prefix="/sounds">
         <file>Rcs/analog-watch-alarm_daniel-simion.wav</file>
     </qresource>
+    <qresource prefix="/icons">
+        <file>Rcs/single_star.png</file>
+        <file>Rcs/double_stars.png</file>
+        <file>Rcs/triple_stars.png</file>
+    </qresource>
 </RCC>
