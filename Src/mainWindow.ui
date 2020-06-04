@@ -233,12 +233,18 @@
      <string>Quick Start</string>
     </property>
     <addaction name="actionHistory"/>
+    <addaction name="actionUser_Plans"/>
    </widget>
    <addaction name="menuQuickStart"/>
   </widget>
   <action name="actionHistory">
    <property name="text">
     <string>History</string>
+   </property>
+  </action>
+  <action name="actionUser_Plans">
+   <property name="text">
+    <string>User Plans</string>
    </property>
   </action>
  </widget>
