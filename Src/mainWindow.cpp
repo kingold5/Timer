@@ -95,3 +95,10 @@ void MainWindow::on_actionHistory_triggered()
     history->setAttribute(Qt::WA_DeleteOnClose);
     history->show();
 }
+
+void MainWindow::on_actionUser_Plans_triggered()
+{
+    userPlans = new UserPlans(data, this);
+    userPlans->setAttribute(Qt::WA_DeleteOnClose);
+    userPlans->show();
+}

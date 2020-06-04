@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "showtimer.h"
 #include "temphistory.h"
+#include "userplans.h"
 #include "database.hpp"
 #include "projectsstruct.h"
 
@@ -28,10 +29,13 @@ private slots:
     void updateHistory(const QString &projectName, const QString &timeLeft);
     void setupProject();
 
+    void on_actionUser_Plans_triggered();
+
 private:
     Ui::MainWindow *ui;
     ShowTimer* showtimer;
     TempHistory *history;
+    UserPlans *userPlans;
     DataBase* data;
 };
 
