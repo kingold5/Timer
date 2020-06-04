@@ -11,7 +11,8 @@ UserPlans::UserPlans(DataBase *pdata, QWidget *parent) :
     docRef(pdata->getDocUser()),
     model(new UserProjectModel(docRef, this)),
     fileName(DataBase::k_userFile),
-    showtimer(nullptr)
+    showtimer(nullptr),
+    newPlan(nullptr)
 {
     ui->setupUi(this);
     setWindowTitle("User Plans");
@@ -94,4 +95,11 @@ void UserPlans::on_pushButtonDelete_clicked()
     if (index.isValid()) {
         ui->tableView->model()->removeRows(index.row(), 1);
     }
+}
+
+void UserPlans::on_pushButtonAdd_clicked()
+{
+    newPlan = new AddPlan(docRef, this);
+    newPlan->setAttribute(Qt::WA_DeleteOnClose);
+    newPlan->show();
 }

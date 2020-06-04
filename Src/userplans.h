@@ -6,6 +6,7 @@
 #include <QDomDocument>
 #include "userprojectmodel.h"
 #include "showtimer.h"
+#include "addplan.h"
 #include "database.hpp"
 
 namespace Ui {
@@ -30,12 +31,15 @@ public slots:
 
 private:
     Ui::UserPlans *ui;
-protected:
     DataBase *data;
     QDomDocument docRef;
     UserProjectModel *model;
     QString fileName;
     ShowTimer *showtimer;
+    AddPlan *newPlan;
+
+private slots:
+    void on_pushButtonAdd_clicked();
 };
 
 #endif // USERPLANS_H
