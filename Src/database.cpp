@@ -7,10 +7,6 @@ const QString DataBase::k_fileDir = "userdata";
 const QString DataBase::k_tempFile = k_fileDir + "/tempplans.xml";
 const QString DataBase::k_userFile = k_fileDir + "/userplans.xml";
 
-DataBase::DataBase()
-{
-}
-
 bool DataBase::initDBFiles()
 {
     if (!QDir(k_fileDir).exists() && !QDir().mkdir(k_fileDir)) {
