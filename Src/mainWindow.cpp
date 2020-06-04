@@ -7,6 +7,8 @@ MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     ui(new Ui::MainWindow),
     showtimer(nullptr),
+    history(nullptr),
+    userPlans(nullptr),
     data(new DataBase)
 {
     ui->setupUi(this);

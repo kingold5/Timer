@@ -34,18 +34,16 @@ int ProjectsModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
         return 0;
-    } else {
-        return nodes.count();
     }
+    return nodes.count();
 }
 
 int ProjectsModel::columnCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
         return 0;
-    } else {
-        return 5;
     }
+    return 5;
 }
 
 QVariant ProjectsModel::data(const QModelIndex &index, int role) const

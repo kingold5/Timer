@@ -61,10 +61,10 @@ void ShowTimer::display()
 }
 
 void ShowTimer::reject() {
-    if (timer->isActive() == true) {
+    if (timer->isActive()) {
         timer->stop();
     }
-    if (efx->isPlaying() == true) {
+    if (efx->isPlaying()) {
         efx->stop();
     }
     QDialog::reject();

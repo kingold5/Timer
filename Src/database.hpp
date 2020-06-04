@@ -7,7 +7,7 @@
 class DataBase
 {
 public:
-    DataBase();
+    DataBase() = default;
 
     bool initDBFiles();
     int loadTemp(QString &projectName, Time &projectTime);
@@ -36,7 +36,7 @@ private:
     bool initUserFiles();
     bool loadDocuments(const QString &fileName, QDomDocument &doc);
     bool saveDocuments(const QString &fileName, const QDomDocument &doc);
-    QString timeElapsed(QString begin, QString end);
+    QString timeElapsed(const QString &begin, const QString &end);
     int completePercent(const QString &timeTotal, const QString &timeLeft);
     int inSeconds(const QString &timeQString);
 

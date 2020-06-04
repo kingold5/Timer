@@ -240,9 +240,8 @@ int DataBase::append(const QString &fileName, const QString &projectName, const 
         QDomElement root = docUser.documentElement();
         if (dataExisted(root, projectName)) {
             return 1;
-        } else {
-            root.appendChild(nodeProject(docUser, projectName, projectTime));
         }
+        root.appendChild(nodeProject(docUser, projectName, projectTime));
         if (!saveDocuments(k_userFile, docUser)) {
             return -1;
         }
@@ -361,7 +360,7 @@ int DataBase::inSeconds(const QString &timeQString)
 {
     Time timeDig;
     toTimeDigital(timeQString, timeDig);
-    int seconds = timeDig.hour * 3600 + timeDig.minute * 60 + timeDig.second;
+    int seconds = static_cast<int>(timeDig.hour * 3600 + timeDig.minute * 60 + timeDig.second);
     return seconds;
 }
 
@@ -381,7 +380,7 @@ bool DataBase::moveToLast(const QString &fileName, const int ID)
     return false;
 }
 
-QString DataBase::timeElapsed(QString begin, QString end)
+QString DataBase::timeElapsed(const QString &begin, const QString &end)
 {
     Time beginDig, endDig, timeDig;
     QString time;
