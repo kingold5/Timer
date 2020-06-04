@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>477</width>
-    <height>291</height>
+    <width>434</width>
+    <height>319</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,7 +30,7 @@
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout_4">
      <property name="bottomMargin">
-      <number>10</number>
+      <number>0</number>
      </property>
      <item>
       <spacer name="horizontalSpacer_4">
@@ -47,10 +47,13 @@
      </item>
      <item>
       <layout class="QFormLayout" name="formLayout">
+       <property name="topMargin">
+        <number>6</number>
+       </property>
        <item row="0" column="0">
         <widget class="QLabel" name="labelPlanName">
          <property name="text">
-          <string>Plan Name:</string>
+          <string>Plan Name</string>
          </property>
          <property name="buddy">
           <cstring>lineEditPlanName</cstring>
@@ -70,7 +73,7 @@
        <item row="1" column="1">
         <layout class="QHBoxLayout" name="horizontalLayout">
          <item>
-          <widget class="MySpinBox" name="mySpinBoxHour"/>
+          <widget class="MySpinBox" name="mySpinBoxHour" native="true"/>
          </item>
          <item>
           <widget class="QLabel" name="label_2">
@@ -80,7 +83,7 @@
           </widget>
          </item>
          <item>
-          <widget class="MySpinBox" name="mySpinBoxMin"/>
+          <widget class="MySpinBox" name="mySpinBoxMin" native="true"/>
          </item>
          <item>
           <widget class="QLabel" name="label_3">
@@ -90,7 +93,7 @@
           </widget>
          </item>
          <item>
-          <widget class="MySpinBox" name="mySpinBoxSec"/>
+          <widget class="MySpinBox" name="mySpinBoxSec" native="true"/>
          </item>
          <item>
           <widget class="QLabel" name="label_4">
@@ -121,18 +124,15 @@
        <item row="3" column="1">
         <widget class="QDateTimeEdit" name="dateTimeEditDeadline"/>
        </item>
-       <item row="4" column="1">
-        <widget class="QPushButton" name="pushButtonAddChildPlan">
-         <property name="minimumSize">
-          <size>
-           <width>200</width>
-           <height>0</height>
-          </size>
-         </property>
+       <item row="4" column="0">
+        <widget class="QLabel" name="labelDescription">
          <property name="text">
-          <string>Add a Child Plan</string>
+          <string>Description</string>
          </property>
         </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="QPlainTextEdit" name="plainTextEditDescription"/>
        </item>
       </layout>
      </item>
@@ -152,7 +152,59 @@
     </layout>
    </item>
    <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_3">
+     <property name="topMargin">
+      <number>10</number>
+     </property>
+     <property name="bottomMargin">
+      <number>10</number>
+     </property>
+     <item>
+      <spacer name="horizontalSpacer_3">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonAddChildPlan">
+       <property name="minimumSize">
+        <size>
+         <width>340</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="text">
+        <string>Add a Child Plan</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_6">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
     <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <property name="bottomMargin">
+      <number>6</number>
+     </property>
      <item>
       <spacer name="horizontalSpacer">
        <property name="orientation">
@@ -212,6 +264,13 @@
    </item>
   </layout>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>MySpinBox</class>
+   <extends>QWidget</extends>
+   <header>myspinbox.h</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections>
   <connection>
