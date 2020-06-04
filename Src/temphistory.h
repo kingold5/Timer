@@ -28,13 +28,12 @@ public slots:
     void update(const QString &projectName, const QString &timeLeft);
     void renderProgress();
 
-protected:
-    Ui::TempHistory *ui;
-
 private:
+    Ui::TempHistory *ui;
+protected:
     DataBase *data;
     QDomDocument docRef;
-    ProjectsModel *tempModel;
+    ProjectsModel *model;
     QString fileName;
     ShowTimer *showtimer;
 };

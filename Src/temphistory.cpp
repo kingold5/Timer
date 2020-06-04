@@ -9,12 +9,13 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     ui(new Ui::TempHistory),
     data(pdata),
     docRef(pdata->getDocHistory()),
-    tempModel(new ProjectsModel(docRef, this)),
-    fileName(DataBase::k_tempFile)
+    model(new ProjectsModel(docRef, this)),
+    fileName(DataBase::k_tempFile),
+    showtimer(nullptr)
 {
     ui->setupUi(this);
     setWindowTitle("History");
-    ui->tableView->setModel(tempModel);
+    ui->tableView->setModel(model);
     renderProgress();
     ui->tableView->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableView->verticalHeader()->hide();
@@ -23,10 +24,9 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     ui->tableView->resizeColumnToContents(0);
 }
 
-
 TempHistory::~TempHistory()
 {
-    delete tempModel;
+    // delete model;
     delete ui;
 }
 
