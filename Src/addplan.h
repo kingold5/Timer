@@ -16,6 +16,9 @@ public:
     explicit AddPlan(QDomDocument doc, QWidget *parent = nullptr);
     ~AddPlan();
 
+private slots:
+    void on_buttonBox_accepted();
+
 private:
     Ui::AddPlan *ui;
     QDomDocument docRef;
