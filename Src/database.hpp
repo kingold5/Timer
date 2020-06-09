@@ -26,6 +26,8 @@ public:
     static QString toTimeQString(const Time &timeDigital);
     static bool toTimeDigital(const QString &timeQString, Time &timeDigital);
     static QDomElement nodeProject(QDomDocument &doc, const QString &projectName="", const QString &projectTime="");
+    static QDomElement nodeProjectRich(QDomDocument &doc, const QString &projectName, const QString &projectTime,
+                                       const int importance, const QString &deadline, const QString &description);
 
     static const QString k_fileDir;
     static const QString k_tempFile;

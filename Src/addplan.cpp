@@ -1,10 +1,11 @@
 #include <QDebug>
 #include "addplan.h"
-#include "ui_addplan.h"
 #include "myspinbox.h"
 #include "projectsstruct.h"
+#include "database.hpp"
+#include "ui_addplan.h"
 
-AddPlan::AddPlan(QDomDocument doc, QWidget *parent) :
+AddPlan::AddPlan(QDomDocument &doc, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::AddPlan),
     docRef(doc)
@@ -43,9 +44,14 @@ void AddPlan::on_buttonBox_accepted()
     Time duration = {ui->mySpinBoxHour->value(),
                      ui->mySpinBoxMin->value(),
                      ui->mySpinBoxSec->value()};
-    int index = ui->comboBoxImportance->currentIndex();
+    int importance = ui->comboBoxImportance->currentIndex();
     QString deadline = ui->dateTimeEditDeadline->dateTime().toString();
     QString description = ui->plainTextEditDescription->document()->toPlainText();
+
+    QDomElement project = DataBase::nodeProjectRich(docRef, ui->lineEditPlanName->text(),
+                                                    DataBase::toTimeQString(duration),
+                                                    importance, deadline, description);
+    docRef.documentElement().appendChild(project);
     // TODO:
-    // Add nodeproject() to record child node index and deadline
+    // Send data changed signal
 }

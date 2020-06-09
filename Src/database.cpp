@@ -310,6 +310,22 @@ QDomElement DataBase::nodeProject(QDomDocument &doc, const QString& projectName,
     return newProject;
 }
 
+QDomElement DataBase::nodeProjectRich(QDomDocument &doc, const QString &projectName, const QString &projectTime,
+                                      const int importance, const QString &deadline, const QString &description)
+{
+    QDomElement newProject = nodeProject(doc, projectName, projectTime);
+    QDomElement elementDeadline = doc.createElement("deadline");
+    QDomElement elementDescription = doc.createElement("description");
+    QDomElement elementImportance = doc.createElement("importance");
+    elementDeadline.appendChild(doc.createTextNode(deadline));
+    elementDescription.appendChild(doc.createTextNode(description));
+    elementImportance.appendChild(doc.createTextNode(QString::number(importance)));
+    newProject.appendChild(elementDeadline);
+    newProject.appendChild(elementDescription);
+    newProject.appendChild(elementImportance);
+    return newProject;
+}
+
 void DataBase::updateCurrent(const QString &fileName, const QString &projectName, const QString &timeLeft)
 {
     if (fileName == k_tempFile) {

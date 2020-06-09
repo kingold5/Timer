@@ -13,7 +13,7 @@ class AddPlan : public QDialog
     Q_OBJECT
 
 public:
-    explicit AddPlan(QDomDocument doc, QWidget *parent = nullptr);
+    explicit AddPlan(QDomDocument &doc, QWidget *parent = nullptr);
     ~AddPlan();
 
 private slots:
