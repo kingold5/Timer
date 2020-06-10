@@ -41,6 +41,7 @@ AddPlan::~AddPlan()
 
 void AddPlan::on_buttonBox_accepted()
 {
+    emit layoutAboutToBeChanged();
     Time duration = {ui->mySpinBoxHour->value(),
                      ui->mySpinBoxMin->value(),
                      ui->mySpinBoxSec->value()};
@@ -52,6 +53,5 @@ void AddPlan::on_buttonBox_accepted()
                                                     DataBase::toTimeQString(duration),
                                                     importance, deadline, description);
     docRef.documentElement().appendChild(project);
-    // TODO:
-    // Send data changed signal
+    emit layoutChanged();
 }

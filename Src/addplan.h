@@ -2,6 +2,7 @@
 #define ADDPLAN_H
 
 #include <QDialog>
+#include <QAbstractItemModel>
 #include <QDomDocument>
 
 namespace Ui {
@@ -16,6 +17,11 @@ public:
     explicit AddPlan(QDomDocument &doc, QWidget *parent = nullptr);
     ~AddPlan();
 
+signals:
+    void layoutChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
+                       QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
+    void layoutAboutToBeChanged(const QList<QPersistentModelIndex> &parents = QList<QPersistentModelIndex>(),
+                                QAbstractItemModel::LayoutChangeHint hint = QAbstractItemModel::NoLayoutChangeHint);
 private slots:
     void on_buttonBox_accepted();
 

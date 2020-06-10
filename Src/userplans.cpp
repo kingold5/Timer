@@ -100,6 +100,13 @@ void UserPlans::on_pushButtonDelete_clicked()
 void UserPlans::on_pushButtonAdd_clicked()
 {
     newPlan = new AddPlan(docRef, this);
+    connect(newPlan, SIGNAL(layoutAboutToBeChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
+            model, SIGNAL(layoutAboutToBeChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)));
+    connect(newPlan, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
+            model, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)));
+    connect(newPlan, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
+            this, SLOT(renderProgress()));
+
     newPlan->setAttribute(Qt::WA_DeleteOnClose);
     newPlan->show();
 }
