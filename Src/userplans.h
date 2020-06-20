@@ -6,7 +6,7 @@
 #include <QDomDocument>
 #include "userprojectmodel.h"
 #include "showtimer.h"
-#include "addplan.h"
+#include "uisingleplan.h"
 #include "database.hpp"
 
 namespace Ui {
@@ -28,6 +28,12 @@ public slots:
     void on_pushButtonDelete_clicked();
     void update(const QString &projectName, const QString &timeLeft);
     void renderProgress();
+    void renderProgressByIdx(int i);
+
+signals:
+    void update(const QString &planName, const QString &planTime,
+                const int &importance, const QString &planDeadline,
+                const QString &description);
 
 private:
     Ui::UserPlans *ui;
@@ -36,10 +42,19 @@ private:
     UserProjectModel *model;
     QString fileName;
     ShowTimer *showtimer;
-    AddPlan *newPlan;
+    uiSinglePlan *newPlan;
+    bool needEdit;
+    QDomElement elementToEdit;
 
 private slots:
     void on_pushButtonAdd_clicked();
+    void on_pushButtonEdit_clicked();
+    void submitData(const QString &planName, const QString &planTime,
+                    const int &importance, const QString &planDeadline,
+                    const QString &description);
+    void editSinglePlan(const QString &planName, const QString &planTime,
+                        const int &importance, const QString &planDeadline,
+                        const QString &description);
 };
 
 #endif // USERPLANS_H

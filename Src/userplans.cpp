@@ -12,7 +12,8 @@ UserPlans::UserPlans(DataBase *pdata, QWidget *parent) :
     model(new UserProjectModel(docRef, this)),
     fileName(DataBase::k_userFile),
     showtimer(nullptr),
-    newPlan(nullptr)
+    newPlan(new uiSinglePlan(docRef, this)),
+    needEdit(false)
 {
     ui->setupUi(this);
     setWindowTitle("User Plans");
@@ -23,6 +24,12 @@ UserPlans::UserPlans(DataBase *pdata, QWidget *parent) :
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->resizeColumnToContents(0);
+    ui->tableView->clearSelection();
+    // newPlan->setAttribute(Qt::WA_DeleteOnClose);
+    connect(newPlan, SIGNAL(sendData(const QString &, const QString &, const int &, const QString &, const QString &)),
+            this, SLOT(submitData(const QString &, const QString &, const int &, const QString &, const QString &)));
+    connect(this, SIGNAL(update(const QString &, const QString &, const int &, const QString &, const QString &)),
+            newPlan, SLOT(updateData(const QString &, const QString &, const int &, const QString &, const QString &)));
 }
 
 UserPlans::~UserPlans()
@@ -35,14 +42,19 @@ void UserPlans::renderProgress()
     int rowCount = ui->tableView->model()->rowCount();
     for (int i = 0; i < rowCount; ++i)
     {
-        QModelIndex index = ui->tableView->model()->index(i, 3);
-        QProgressBar *progress = new QProgressBar;
-        progress->setMinimum(0);
-        progress->setMaximum(100);
-        progress->setValue(ui->tableView->model()->index(i, 3).data().toInt());
-        progress->setAutoFillBackground(true);
-        ui->tableView->setIndexWidget(index, progress);
+        renderProgressByIdx(i);
     }
+}
+
+void UserPlans::renderProgressByIdx(int i)
+{
+    QModelIndex index = ui->tableView->model()->index(i, 3);
+    QProgressBar *progress = new QProgressBar;
+    progress->setMinimum(0);
+    progress->setMaximum(100);
+    progress->setValue(ui->tableView->model()->index(i, 3).data().toInt());
+    progress->setAutoFillBackground(true);
+    ui->tableView->setIndexWidget(index, progress);
 }
 
 void UserPlans::update(const QString &projectName, const QString &timeLeft)
@@ -54,6 +66,38 @@ void UserPlans::update(const QString &projectName, const QString &timeLeft)
     data->updateCurrent(fileName, projectName, timeLeft);
     renderProgress();
     data->saveDataBase(fileName);
+}
+
+void UserPlans::submitData(const QString &planName, const QString &planTime,
+                           const int &importance, const QString &planDeadline,
+                           const QString &description)
+{
+    QDomElement root = docRef.documentElement();
+    if (needEdit) {
+        editSinglePlan(planName, planTime, importance, planDeadline, description);
+        newPlan->close();
+    } else if (!data->dataExisted(root, planName)) {
+        needEdit = false;
+        emit model->layoutAboutToBeChanged();
+        QDomElement project = DataBase::nodeProjectRich(docRef, planName, planTime, importance, planDeadline, description);
+        docRef.documentElement().appendChild(project);
+        emit model->layoutChanged();
+        newPlan->close();
+        renderProgressByIdx(ui->tableView->model()->rowCount() - 1);
+    } else {
+        QMessageBox::warning(this, "Warning", "Project already exists!");
+    }
+}
+
+void UserPlans::editSinglePlan(const QString &planName, const QString &planTime,
+                               const int &importance, const QString &planDeadline,
+                               const QString &description)
+{
+    elementToEdit.setAttribute("name", planName);
+    elementToEdit.setAttribute("duration", planTime);
+    elementToEdit.firstChildElement("importance").firstChild().setNodeValue(QString::number(importance));
+    elementToEdit.firstChildElement("description").firstChild().setNodeValue(description);
+    elementToEdit.firstChildElement("deadline").firstChild().setNodeValue(planDeadline);
 }
 
 void UserPlans::on_pushButtonRun_clicked()
@@ -99,14 +143,23 @@ void UserPlans::on_pushButtonDelete_clicked()
 
 void UserPlans::on_pushButtonAdd_clicked()
 {
-    newPlan = new AddPlan(docRef, this);
-    connect(newPlan, SIGNAL(layoutAboutToBeChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
-            model, SIGNAL(layoutAboutToBeChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)));
-    connect(newPlan, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
-            model, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)));
-    connect(newPlan, SIGNAL(layoutChanged(const QList<QPersistentModelIndex> &, QAbstractItemModel::LayoutChangeHint)),
-            this, SLOT(renderProgress()));
-
-    newPlan->setAttribute(Qt::WA_DeleteOnClose);
+    newPlan->clearData();
     newPlan->show();
+}
+
+void UserPlans::on_pushButtonEdit_clicked()
+{
+    QModelIndex index = ui->tableView->currentIndex();
+    if (index.isValid()) {
+        needEdit = true;
+        QDomNodeList nodes = docRef.elementsByTagName("projects");
+        elementToEdit = nodes.at(index.row()).toElement();
+        const QString planName = elementToEdit.attribute("name", "");
+        const QString planTime = elementToEdit.attribute("duration", "");
+        const QString planDeadline = elementToEdit.firstChildElement("deadline").text();
+        const QString description = elementToEdit.firstChildElement("description").text();
+        const int importance = elementToEdit.firstChildElement("importance").text().toInt();
+        emit update(planName, planTime, importance, planDeadline, description);
+        newPlan->show();
+    }
 }
