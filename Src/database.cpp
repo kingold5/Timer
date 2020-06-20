@@ -347,6 +347,10 @@ void DataBase::updateCurrent(const QString &fileName, const QString &projectName
             if (!e.isNull()) {
                 if (e.attribute("name", "") == projectName) {
                     e.setAttribute("timeLeft", timeLeft);
+                    int percentage = completePercent(e.attribute("duration", "00:00:01"), timeLeft);
+                    if (percentage <= 100 && percentage >=0) {
+                        e.setAttribute("percent100", QString::number(percentage));
+                    }
                     break;
                 }
             }
