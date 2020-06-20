@@ -10,7 +10,6 @@ TARGET = Timer
 TEMPLATE = app
 
 SOURCES += \
-    addplan.cpp \
     main.cpp \
     mainWindow.cpp \
     Countdown.cpp \
@@ -19,12 +18,12 @@ SOURCES += \
     showtimer.cpp \
     database.cpp \
     temphistory.cpp \
+    uisingleplan.cpp \
     userplans.cpp \
     userprojectmodel.cpp
 
 HEADERS += \
     Countdown.hpp \
-    addplan.h \
     mainWindow.h \
     myspinbox.h \
     projectsmodel.h \
@@ -32,13 +31,14 @@ HEADERS += \
     showtimer.h \
     database.hpp \
     temphistory.h \
+    uisingleplan.h \
     userplans.h \
     userprojectmodel.h
 
 FORMS += mainWindow.ui \
-    addplan.ui \
     showtimer.ui \
     temphistory.ui \
+    uisingleplan.ui \
     userplans.ui
 
 RESOURCES += \
