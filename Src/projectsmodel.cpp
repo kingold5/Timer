@@ -69,9 +69,7 @@ QVariant ProjectsModel::data(const QModelIndex &index, int role) const
             break;
         }
     } else if (role == Qt::TextAlignmentRole) {
-        if (index.column()==0 || index.column()==1 || index.column()==2) {
-            return Qt::AlignHCenter + Qt::AlignVCenter;
-        }
+        return Qt::AlignCenter;
     }
 
     return QVariant();
