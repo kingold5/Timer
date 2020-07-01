@@ -4,6 +4,11 @@
 #include "userplans.h"
 #include "ui_userplans.h"
 
+
+// TODO:
+// Recording every run's datetime, period.
+// Show every run's detail in table view
+
 UserPlans::UserPlans(DataBase *pdata, QWidget *parent) :
     QDialog(parent),
     ui(new Ui::UserPlans),
@@ -23,6 +28,7 @@ UserPlans::UserPlans(DataBase *pdata, QWidget *parent) :
     ui->tableView->verticalHeader()->hide();
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
+    ui->tableView->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->tableView->resizeColumnToContents(0);
     ui->tableView->clearSelection();
     // newPlan->setAttribute(Qt::WA_DeleteOnClose);
@@ -48,11 +54,11 @@ void UserPlans::renderProgress()
 
 void UserPlans::renderProgressByIdx(int i)
 {
-    QModelIndex index = ui->tableView->model()->index(i, 3);
+    QModelIndex index = ui->tableView->model()->index(i, 4);
     QProgressBar *progress = new QProgressBar;
     progress->setMinimum(0);
     progress->setMaximum(100);
-    progress->setValue(ui->tableView->model()->index(i, 3).data().toInt());
+    progress->setValue(ui->tableView->model()->index(i, 4).data().toInt());
     progress->setAutoFillBackground(true);
     ui->tableView->setIndexWidget(index, progress);
 }
