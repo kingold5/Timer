@@ -22,6 +22,7 @@ TempHistory::TempHistory(DataBase *pdata, QWidget *parent) :
     ui->tableView->horizontalHeader()->setStretchLastSection(true);
     ui->tableView->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableView->resizeColumnToContents(0);
+    // ui->tableView->;
 }
 
 TempHistory::~TempHistory()
