@@ -2,7 +2,7 @@
 #include "userprojectmodel.h"
 
 // TODO:
-// Centering Importance items
+// Centering Importance items, make double star, triple start bigger
 
 UserProjectModel::UserProjectModel(QDomDocument &pdoc, QObject *parent)
     : ProjectsModel(pdoc, parent)
