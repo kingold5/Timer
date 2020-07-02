@@ -21,3 +21,5 @@ Any runned projects will be showed in history(Quick Start | History). You can mo
 Any projects you added are showed here.(Quick Start | User Plans)
 ![User Plans](./Screenshots/user_plans.png)
 
+You can select and edit any single projects in user plans
+![Edit Single Plans](./Screenshots/edit_userplan.png)
