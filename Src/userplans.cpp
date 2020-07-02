@@ -80,10 +80,14 @@ void UserPlans::submitData(const QString &planName, const QString &planTime,
 {
     QDomElement root = docRef.documentElement();
     if (needEdit) {
+        // TODO:
+        // Use datachanged instead of layoutchanged
+        needEdit = false;
+        emit model->layoutAboutToBeChanged();
         editSinglePlan(planName, planTime, importance, planDeadline, description);
         newPlan->close();
+        emit model->layoutChanged();
     } else if (!data->dataExisted(root, planName)) {
-        needEdit = false;
         emit model->layoutAboutToBeChanged();
         QDomElement project = DataBase::nodeProjectRich(docRef, planName, planTime, importance, planDeadline, description);
         docRef.documentElement().appendChild(project);
@@ -111,7 +115,7 @@ void UserPlans::on_pushButtonRun_clicked()
     QModelIndex index = ui->tableView->currentIndex();
     if (index.isValid()) {
         QString projectName = ui->tableView->model()->index(index.row(), 0).data().toString();
-        QString projectTime = ui->tableView->model()->index(index.row(), 2).data().toString();
+        QString projectTime = ui->tableView->model()->index(index.row(), 3).data().toString();
         if (index.row() != ui->tableView->model()->rowCount()-1) {
             ui->tableView->model()->moveRows(QModelIndex(), index.row(), 1, QModelIndex(), ui->tableView->model()->rowCount());
         }
