@@ -17,3 +17,7 @@ The running example. You can choose to pause the countdown clock, cancle the cou
 
 Any runned projects will be showed in history(Quick Start | History). You can modify, delete any projects you want.
 ![History](./Screenshots/history.png)
+
+Any projects you added are showed here.(Quick Start | User Plans)
+![User Plans](./Screenshots/user_plans.png)
+
