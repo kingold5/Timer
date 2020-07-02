@@ -4,9 +4,11 @@
 ## Table of contents
 * [General info](#general-info)
 * [Screenshots](#screenshots)
+* [Setup](#setup)
 
 ## General info
 You can use this app to control your projects.
+App tested in Manjaro, Ubuntu 14.04.
 
 ## Screenshots
 This is the main page of the Timer app, here you can add your planed project, or just run a temporary project.
@@ -23,3 +25,6 @@ Any projects you added are showed here.(Quick Start | User Plans)
 
 You can select and edit any single projects in user plans
 ![Edit Single Plans](./Screenshots/edit_userplan.png)
+
+## Setup
+Extract the zip file, execute TimerApp | bin | Timer
